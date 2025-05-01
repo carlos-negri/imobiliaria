@@ -1,0 +1,62 @@
+{% extends 'principal.html' %}
+{% load django_bootstrap5 %}
+{% block content %}
+<div class="container">
+    <div class="card shadow m-3 col-md-8 mx-auto">
+        <div class="card-body">
+            <h3 class="text-center mb-0">Agendamento de Visita</h3>
+        </div>
+        <div class="card-body">
+            <form method="POST" class="needs-validation" novalidate>
+                {% csrf_token %}
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        {% bootstrap_field form.cliente %}
+                    </div>
+                    <div class="col-md-6">
+                        {% bootstrap_field form.corretor %}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        {% bootstrap_field form.imovel %}
+                    </div>
+                    <div class="col-md-6">
+                        {% bootstrap_field form.datahora %}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    {% bootstrap_field form.observacoes %}
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'visitas' %}" class="btn btn-secondary me-md-2">
+                        <i class="bi bi-x-circle"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-calendar-check"></i> Agendar Visita
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        flatpickr("#id_datahora", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            locale: "pt",
+            time_24hr: true,
+            minDate: "today"
+        });
+    });
+</script>
+{% endblock %}

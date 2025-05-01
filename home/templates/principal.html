@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load django_bootstrap5 %}
     {% block head %}
         {% include "head.html" %}
     {% endblock %}
@@ -7,6 +8,12 @@
 {% block header %}
     {% include "header.html" %}
 {% endblock %}
+
+{% if messages %}
+ <div class="container-fluid p-3">
+     {% bootstrap_messages %}
+ </div>
+{% endif %}
 
 {% block content %}
 {% endblock %}

@@ -45,10 +45,14 @@ INSTALLED_APPS +=[
     'home',
     'visita',
     'clientes',
+    'proprietarios',
+    'corretores',
+    'imoveis',
 ]
 
 INSTALLED_APPS += [
-    'django_bootstrap5'
+    'django_bootstrap5',
+    'stdimage',
 ]
 
 MIDDLEWARE = [
@@ -120,6 +124,14 @@ TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
+USE_L10N = False
+DATETIME_INPUT_FORMATS = [
+    '%Y-%m-%d %H:%M:%S',    # '2006-10-25 14:30:59'
+    '%Y-%m-%d %H:%M',       # '2006-10-25 14:30'
+    '%Y-%m-%dT%H:%M',       # '2006-10-25T14:30'
+    '%d/%m/%Y %H:%M',       # '25/10/2006 14:30'
+]
+
 USE_TZ = True
 
 
@@ -127,8 +139,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = [ BASE_DIR / 'static' ]
+MEDIA_ROOT = BASE_DIR / 'media'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 

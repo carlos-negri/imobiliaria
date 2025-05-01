@@ -28,8 +28,8 @@
                         <table class="table table-hover">
                             <thead class="table-success">
                                 <th>Nome</th>
-                                <th>Cnpj</th>
                                 <th>Fone</th>
+                                <th>Email</th>
                                 <th style="width: 100px; text-align: center">Ações</th>
                             </thead>
                             <tbody>
@@ -47,7 +47,7 @@
                                             </a>
                                             <a class="text-decoration-none" href="{% url 'cliente_apagar' cliente.pk %}">
                                                 <span class="icon">
-                                                    <i class="far fa-trash-alt"></i>
+                                                    <i class="bi bi-trash3-fill"></i>
                                                 </span>
                                             </a>
                                         </td>
@@ -62,7 +62,10 @@
                 </div>
             {% else %}
                 <h5>Não existem clientes cadastrados!</h5>
+                <a class="btn btn-primary btn-lg text-white" href="{% url 'cliente_adicionar' %}" role="button">Cadastrar cliente</a>
+                </button>
             {% endif %}
+
         </div>
     </section>
 {% endblock %}

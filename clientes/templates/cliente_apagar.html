@@ -6,8 +6,8 @@
             <div class="row">
                 <h3 class="text-center">Dados do Cliente</h3>
                 <p class="p-2 mt-2"><strong>Nome: </strong>{{ object.nome}}</p>
-<!--                vem só um objeto e o atributo-->
                 <p class="p-2 mt-2"><strong>Fone: </strong>{{ object.fone }}</p>
+                <p class="p-2 mt-2"><strong>Email: </strong>{{ object.email }}</p>
                 <p class="p-2 mt-2">Confirma a exclusão do cliente: <strong>{{ object }}</strong>?</p>
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}

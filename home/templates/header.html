@@ -1,9 +1,9 @@
 {% load static %}
-<section class="section bg-success p-2 bg-opacity-75">
+<section class="section p-2" style="background-color:#191970">
         <div class="container">
             <nav class="navbar navbar-expand-lg" data-bs-theme="dark">
                 <a class="navbar-brand" href="{% url 'index' %}">
-                    <img src="{% static 'img/logo.png'%}" width="200" height="200">
+                    <img src="{% static 'img/logo-branco.png'%}" width="50" height="50">
                 </a>
                 <div class="container-fluid">
                     <a class="navbar-brand" href="{% url 'index' %}">Início</a>
@@ -47,10 +47,30 @@
                                 </ul>
                             </li>
 
-
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarProprietario" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Proprietarios
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{% url 'proprietario_adicionar' %}">Cadastrar Proprietario</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'proprietarios' %}">Listar Proprietários</a></li>
+                                </ul>
+                            </li>
 
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarProduto" role="button"
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarCorretor" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Corretores
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{% url 'corretor_adicionar' %}">Cadastrar Corretor</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'corretores' %}">Listar Corretores</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarContrato" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     Contratos
                                 </a>
@@ -59,14 +79,24 @@
                                     <li><a class="dropdown-item" href="#">Listar Contratos Ativos</a></li>
                                 </ul>
                             </li>
+                                                        <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarImoveis" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Imóveis
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{% url 'imovel_adicionar' %}">Cadastrar Imóvel</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'imoveis' %}">Listar Imóveis</a></li>
+                                </ul>
+                            </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarAgendamento" role="button"
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarVisitas" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     Visitas
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{% url 'cadastroVisita' %}">Cadastrar Visita</a></li>
-                                    <li><a class="dropdown-item" href="#">Listar Visitas</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'visita_adicionar' %}">Cadastrar Visita</a></li>
+                                    <li><a class="dropdown-item" href="{%">Listar Visitas</a></li>
                                 </ul>
                             </li>
                         </ul>
