@@ -7,23 +7,11 @@
             <h1 class="display-4">Seu imóvel dos sonhos está aqui</h1>
         </div>
     </section>
-      <div class="container-fluid bg-opacity:100">
-        <div class="row">
-            <div class="d-flex justify-content-around ">
-              <img src="{% static 'img/casa-exemplo.jpg'%}" width="200" height="200">
-              <img src="{% static 'img/casa-exemplo.jpg'%}" width="200" height="200">
-              <img src="{% static 'img/casa-exemplo.jpg'%}" width="200" height="200">
-              <img src="{% static 'img/casa-exemplo.jpg'%}" width="200" height="200">
-              <img src="{% static 'img/casa-exemplo.jpg'%}" width="200" height="200">
-
-            </div>
-          <div class="d-flex justify-content-around">
-            <h1 style="color: black">Imóvel</h1>
-            <h1 style="color: black">Imóvel</h1>
-            <h1 style="color: black">Imóvel</h1>
-            <h1 style="color: black">Imóvel</h1>
-            <h1 style="color: black">Imóvel</h1>
-            </div>
-        </div>
+      <div class="container-fluid d-flex justify-content-between" style="background-color:#191970;">
+       <a href="{% url 'clientes' %}"><button type="button" class="btn btn-primary btn-lg mx-2">Ver clientes cadastrados</button></a>
+       <a href="{% url 'proprietarios' %}"><button type="button" class="btn btn-primary btn-lg mx-2">Ver proprietários cadastrados</button></a>
+       <a href="{% url 'corretores' %}"><button type="button" class="btn btn-primary btn-lg mx-2">Ver corretores cadastrados</button></a>
+       <a href="{% url 'imoveis' %}"><button type="button" class="btn btn-primary btn-lg mx-2">Ver imóveis cadastrados</button></a>
+       <a href="{% url 'visitas' %}"><button type="button" class="btn btn-primary btn-lg mx-2">Ver visitas cadastradas</button></a>
       </div>
 {% endblock %}

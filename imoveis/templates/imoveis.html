@@ -19,44 +19,28 @@
                 </div>
             </form>
             {% if object_list %}
-<!--            {% indica bloco de instruçoes-->
-<!--            mostra as coisa se tiver gente dentro da lista/se a lista nao tiver vazia-->
-                <div class="card-body">
-                    <h3 class="text-center">Imóveis Cadastrados</h3>
-                            {% for imovel in object_list %}
-                                    <div class="col-md-4 mb-4">
-        <div class="card h-100 shadow">
-            <img src="{{ imovel.fotos.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
-            <div class="card-body">
-                <h5 class="card-title">{{ imovel.get_tipo_imovel_display }} - {{ imovel.endereco }}</h5>
-                <p class="card-text">
-                    <i class="bi bi-house-door"></i> {{ imovel.quartos }} quartos<br>
-                    <i class="bi bi-currency-dollar"></i> R$ {{ imovel.valor_iptu }}
-                </p>
-            </div>
-            <div class="card-footer bg-white">
-                <a href="{% url 'imovel_exibir' imovel.id %}" class="btn btn-sm btn-primary">Detalhes</a>
-                <td style="text-align: center">
-                    <a href="{% url 'imovel_editar' imovel.pk %}">
-                        <span class="icon">
+                <h3 class="text-center">Imóveis Cadastrados</h3>
+            {% for imovel in object_list %}
+            <div class="row d-flex flex-nowrap ">
+                    <div class="card" style="width: 18rem;">
+                      <img class="card-img-top" src="{{ imovel.foto.url }}" alt="Imovel">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ imovel.get_tipo_imovel_display }} - {{ imovel.endereco }}</h5>
+                        <p class="card-text">
+                            <i class="bi bi-house-door"></i> {{ imovel.quartos }} quartos<br>
+                            <i class="bi bi-currency-dollar"></i> R$ {{ imovel.valor_iptu }}
+                        </p>
+                        <a href="{% url 'imovel_exibir' imovel.id %}" class="btn btn-primary">Ver mais</a>
+                        <a class="text-decoration-none" href="{% url 'imovel_editar' imovel.pk %}">
+                            <span class="icon">
                             <i class="bi bi-pencil-square"></i>
-                        </span>
-                    </a>
-                    <a href="{% url 'imovel_apagar' imovel.pk %}">
-                        <span class="icon">
-                            <i class="bi bi-trash3-fill"></i>
-                        </span></a></td>
+                            </span>
+                        </a>
+                      </div>
+                    </div>
             </div>
-        </div>
-    </div>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        {% bootstrap_pagination object_list url="/imoveis?page=1" size="sm" %}
-                    </div>
-                </div>
+                {% endfor%}
+
             {% else %}
                 <h5>Não existem imóveis cadastrados!</h5>
             <a class="btn btn-primary btn-lg text-white" href="{% url 'imovel_adicionar' %}" role="button">Cadastrar imóvel</a>
