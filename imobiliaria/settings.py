@@ -48,7 +48,7 @@ INSTALLED_APPS +=[
     'proprietarios',
     'corretores',
     'imoveis',
-
+    'transacoes',
 ]
 
 INSTALLED_APPS += [

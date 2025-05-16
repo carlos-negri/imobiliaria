@@ -23,7 +23,9 @@
             {% for imovel in object_list %}
             <div class="row d-flex flex-nowrap ">
                     <div class="card" style="width: 18rem;">
+                        {% if imovel.foto %}}
                       <img class="card-img-top" src="{{ imovel.foto.url }}" alt="Imovel">
+                        {% endif %}
                       <div class="card-body">
                         <h5 class="card-title">{{ imovel.get_tipo_imovel_display }} - {{ imovel.endereco }}</h5>
                         <p class="card-text">

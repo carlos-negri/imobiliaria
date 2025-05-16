@@ -1,0 +1,15 @@
+{% extends 'principal.html' %}
+{% load django_bootstrap5 %}
+{% block content %}
+ <div class="card shadow m-3 col-md-6 mx-auto">
+        <div class="card-body">
+            <div class="row">
+                <h3 class="text-center">Nova transação</h3>
+                  <div class="container-fluid d-flex justify-content-between">
+                   <a href="{% url 'aluguel_adicionar' %}"><button type="button" class="btn btn-primary btn-lg mx-2">Cadastrar aluguel</button></a>
+                   <a href="{% url 'venda_adicionar' %}"><button type="button" class="btn btn-primary btn-lg mx-2">Cadastrar venda</button></a>
+                  </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

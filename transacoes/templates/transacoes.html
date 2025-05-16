@@ -6,10 +6,10 @@
         <div class="container">
             <form action="" method="GET">
                 <div class="form-group row p-3">
-                    <label class="col-sm-2 col-form-label">Visitas: </label>
+                    <label class="col-sm-2 col-form-label">Transações: </label>
                     <div class="col-sm-8">
                         <input class="form-control" type="text" name="buscar" value="{{ request.GET.buscar }}"
-                               placeholder="Pesquisar visitas">
+                               placeholder="Buscar">
                     </div>
                     <div class="col-sm-2">
                         <button type="submit" class="btn btn-primary">
@@ -19,36 +19,40 @@
                 </div>
             </form>
             {% if object_list %}
-<!--            {% indica bloco de instruçoes-->
-<!--            mostra as coisa se tiver gente dentro da lista/se a lista nao tiver vazia-->
+
                 <div class="card-body">
-                    <h3 class="text-center">Visitas agendadas</h3>
+                    <h3 class="text-center">Transações ativas</h3>
 
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
-                                <th>Data e hora</th>
-                                <th>Código do Imóvel</th>
-                                <th>Corretor</th>
+                                <th>Proprietário</th>
+                                <th>Imóvel</th>
                                 <th>Cliente</th>
-                                <th>SITUAÇÃO</th>
+                                <th>Corretor</th>
+                                <th>Tipo</th>
+                                <th>Valor da venda</th>
+                                <th>Valor do aluguel</th>
                                 <th style="width: 100px; text-align: center">Ações</th>
                             </thead>
                             <tbody>
-                            {% for visita in object_list %}
+                            {% for transacao in object_list %}
                                     <tr>
-                                        <td>{{visita.datahora}}</td>
-                                        <td>{{visita.imovel}}</td>
-                                        <td>{{visita.corretor}}</td>
-                                        <td>{{visita.cliente}}</td>
-                                        <td>{{visita.situacao}}</td>
+                                        <td>{{transacao.proprietario}}</td>
+<!--                                        {{ mostra conteudo nome de cliente-->
+                                        <td>{{transacao.imovel}}</td>
+                                        <td>{{transacao.cliente}}</td>
+                                        <td>{{transacao.corretor}}</td>
+                                        <td>{{transacao.tipo}}</td>
+                                        <td>{{transacao.valor}}</td>
+
                                         <td style="text-align: center">
-                                            <a class="text-decoration-none" href="{% url 'visita_editar' visita.pk %}">
+                                            <a class="text-decoration-none" href="{% url 'transacao_editar' transacao.pk %}">
                                                 <span class="icon">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </span>
                                             </a>
-                                            <a class="text-decoration-none" href="{% url 'visita_apagar' visita.pk %}">
+                                            <a class="text-decoration-none" href="{% url 'transacao_apagar' transacao.pk %}">
                                                 <span class="icon">
                                                     <i class="bi bi-trash3-fill"></i>
                                                 </span>
@@ -60,15 +64,13 @@
                         </table>
                     </div>
                     <div class="d-flex justify-content-center">
-                        {% bootstrap_pagination object_list url="/visita?page=1" size="sm" %}
+                        {% bootstrap_pagination object_list url="/transacoes?page=1" size="sm" %}
                     </div>
                 </div>
             {% else %}
-                <h5>Não existem visitas agendadas!</h5>
-                <a class="btn btn-primary btn-lg text-white" href="{% url 'visita_adicionar' %}" role="button">Agendar visita</a>
-                </button>
+                <h5>Não existem transações ativas!</h5>
+            <a class="btn btn-primary btn-lg text-white" href="{% url 'transacao_adicionar' %}" role="button">Nova transação</a>
             {% endif %}
-
         </div>
     </section>
 {% endblock %}
