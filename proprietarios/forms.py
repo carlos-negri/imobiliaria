@@ -1,5 +1,9 @@
 from django import forms
-from .models import Proprietario
+from django.forms import inlineformset_factory
+
+
+from .models import Proprietario, ImoveisProprietario
+
 
 class ProprietarioModelForm(forms.ModelForm):
     class Meta:
@@ -11,3 +15,6 @@ class ProprietarioModelForm(forms.ModelForm):
             'fone': {'required': 'O telefone do proprietário é um campo obrigatório'},
             'email': {'required': 'O email do proprietário é um campo obrigatório'},
         }
+
+ImoveisProprietarioInLine = inlineformset_factory(Proprietario, ImoveisProprietario, fk_name='proprietario',
+                                              fields=('proprietario', 'imovel'), extra=1, can_delete=True)

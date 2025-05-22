@@ -11,3 +11,15 @@ class Proprietario(models.Model):
 
     def __str__(self):
         return self.nome
+
+class ImoveisProprietario(models.Model):
+    imovel = models.ForeignKey('imoveis.Imovel', verbose_name='Imovel', help_text='Imóvel',
+                                on_delete=models.CASCADE, related_name='imovelprop')
+    proprietario = models.ForeignKey('proprietarios.Proprietario', verbose_name='Proprietario', help_text='Nome do proprietario',
+                                on_delete=models.PROTECT, related_name='proprietarioimov')
+    class Meta:
+        verbose_name = 'Imóvel do proprietário'
+        verbose_name_plural = 'Imóveis do proprietário'
+
+    def __str__(self):
+        return f'{self.imovel}'

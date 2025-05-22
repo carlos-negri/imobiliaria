@@ -1,4 +1,6 @@
 from django import forms
+from django.forms import inlineformset_factory
+
 from .models import Imovel
 
 class ImovelModelForm(forms.ModelForm):
@@ -40,3 +42,4 @@ class ImovelModelForm(forms.ModelForm):
         'tipo_imovel':{'required': 'O tipo de imóvel é um campo obrigatório'},
         'status_imovel':{'required': 'O status do imóvel é um campo obrigatório'},
         }
+

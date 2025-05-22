@@ -1,0 +1,20 @@
+{% extends 'principal.html' %}
+{% load django_bootstrap5 %}
+{% block content %}
+    <div class="card shadow m-3 col-md-6 mx-auto">
+        <div class="card-body">
+            <div class="row">
+                <h3 class="text-center">Dados da Visita</h3>
+                <p class="p-2 mt-2"><strong>Data e Hora: </strong>{{ visita.datahora }}</p>
+                <p class="p-2 mt-2"><strong>Cliente: </strong>{{ visita.cliente }}</p>
+                <p class="p-2 mt-2"><strong>Corretor responsável pela visita: </strong>
+                {{ visita.corretor }}</p>
+                <div class="text-end">
+                        <a href="{% url 'visitas' %}" class="btn btn-primary text-white" type="button">
+                           <span class="text">Voltar</span>
+                        </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

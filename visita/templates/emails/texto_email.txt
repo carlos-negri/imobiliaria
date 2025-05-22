@@ -1,0 +1,10 @@
+Olá {{cliente}}!
+Estamos enviando este e-mail para comunicar que sua visita foi agendada com sucesso.
+
+Dados da Visita
+Data e hora: {{ datahora }}
+Corretor responsável pelo agendamento: {{ corretor }}
+
+Esperamos que seu novo lar seja encantador!
+
+JATIMOV

@@ -57,3 +57,5 @@ class Imovel (models.Model):
 
     def __str__(self):
         return self.codigo_unico
+
+

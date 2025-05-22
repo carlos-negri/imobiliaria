@@ -1,6 +1,11 @@
+from datetime import datetime
+
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.mail import send_mail
+from django.shortcuts import redirect
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from .forms import VisitaModelForm
 from .models import Visita
 from django.core.paginator import Paginator
@@ -42,3 +47,34 @@ class VisitaDeleteView(SuccessMessageMixin, DeleteView):
     template_name = 'visita_apagar.html'
     success_url = reverse_lazy('visitas')
     success_message = 'Visita cancelada com sucesso'
+
+class VisitaExibir(DetailView):
+    model = Visita
+    template_name = 'visita_exibir.html'
+
+    def get_object(self, queryset=None):
+        visita = Visita.objects.get(pk=self.kwargs.get('pk'))
+        if visita.situacao=='A':
+            visita.save()
+            self.enviar_email(visita)
+        return visita
+
+    def enviar_email(self, visita):
+        email = []
+        email.append(visita.cliente.email)
+
+        dados = {'cliente': visita.cliente.nome,
+                 'datahora': visita.datahora,
+                 'corretor': visita.corretor.nome,
+                 }
+
+        texto_email = render_to_string('emails/texto_email.txt', dados)
+        html_email = render_to_string('emails/texto_email.html', dados)
+        send_mail(subject='JATIMOV - Visita Agendada',
+                  message = texto_email,
+                  from_email = 'chnnegri@gmail.com',
+                  recipient_list = email,
+                  html_message = html_email,
+                  fail_silently = False,
+        )
+        return redirect('visitas')

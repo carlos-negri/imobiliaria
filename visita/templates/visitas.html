@@ -43,14 +43,29 @@
                                         <td>{{visita.cliente}}</td>
                                         <td>{{visita.situacao}}</td>
                                         <td style="text-align: center">
-                                            <a class="text-decoration-none" href="{% url 'visita_editar' visita.pk %}">
+                                            {% if agendamento.status == 'A' %}
+                                                <a class="text-decoration-none" href="{% url 'visita_editar' visita.pk %}">
+                                                    <span class="icon">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </span>
+                                                </a>
+                                                <a class="text-decoration-none" href="{% url 'visita_apagar' visita.pk %}">
+                                                    <span class="icon">
+                                                        <i class="bi bi-trash3-fill"></i>
+                                                    </span>
+                                                </a>
+                                            {% else %}
                                                 <span class="icon">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </span>
-                                            </a>
-                                            <a class="text-decoration-none" href="{% url 'visita_apagar' visita.pk %}">
+
                                                 <span class="icon">
                                                     <i class="bi bi-trash3-fill"></i>
+                                                </span>
+                                            {% endif %}
+                                            <a href="{% url 'visita_exibir' visita.pk %}">
+                                                <span class="icon">
+                                                    <i class="bi bi-check-circle"></i>
                                                 </span>
                                             </a>
                                         </td>
