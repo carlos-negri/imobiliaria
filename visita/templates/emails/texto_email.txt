@@ -1,10 +1,8 @@
 Olá {{cliente}}!
-Estamos enviando este e-mail para comunicar que sua visita foi agendada com sucesso.
+Como foi sua visita no imóvel {{imovel}}?
 
-Dados da Visita
-Data e hora: {{ datahora }}
-Corretor responsável pelo agendamento: {{ corretor }}
+Aguardamos seu feedback!
 
-Esperamos que seu novo lar seja encantador!
+Esperamos que seu novo lar seja encantador igual você!
 
 JATIMOV

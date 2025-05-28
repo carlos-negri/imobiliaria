@@ -43,7 +43,7 @@
                                         <td>{{visita.cliente}}</td>
                                         <td>{{visita.situacao}}</td>
                                         <td style="text-align: center">
-                                            {% if agendamento.status == 'A' %}
+                                            {% if visita.situacao != 'CO' %}
                                                 <a class="text-decoration-none" href="{% url 'visita_editar' visita.pk %}">
                                                     <span class="icon">
                                                         <i class="bi bi-pencil-square"></i>

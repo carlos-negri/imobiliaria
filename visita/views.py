@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
 from django.shortcuts import redirect
@@ -35,6 +33,36 @@ class VisitaAddView(SuccessMessageMixin,CreateView):
     success_url = reverse_lazy('visitas')
     success_message = 'Visita agendada com sucesso'
 
+    def post (self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            visita = form.save(commit=True)
+            if visita.situacao == 'A':
+                self.enviar_email(visita)
+            return redirect('visitas')
+
+
+    def enviar_email(self, visita):
+        email = []
+        email.append(visita.cliente.email)
+
+        dados = {'cliente': visita.cliente.nome,
+                 'imovel':visita.imovel,
+                 'datahora': visita.datahora,
+                 'corretor': visita.corretor.nome,
+                 }
+
+        texto_email = render_to_string('emails/email_confirma.txt', dados)
+        html_email = render_to_string('emails/email_confirma.html', dados)
+        send_mail(subject='JATIMOV - Visita Agendada',
+                  message = texto_email,
+                  from_email = 'chnnegri@gmail.com',
+                  recipient_list = email,
+                  html_message = html_email,
+                  fail_silently = False,
+        )
+        return redirect('visitas')
+
 class VisitaUpdateView(SuccessMessageMixin,UpdateView):
     model = Visita
     form_class = VisitaModelForm
@@ -54,7 +82,8 @@ class VisitaExibir(DetailView):
 
     def get_object(self, queryset=None):
         visita = Visita.objects.get(pk=self.kwargs.get('pk'))
-        if visita.situacao=='A':
+        if visita.situacao!='CO':
+            visita.situacao = 'CO'
             visita.save()
             self.enviar_email(visita)
         return visita
@@ -64,13 +93,14 @@ class VisitaExibir(DetailView):
         email.append(visita.cliente.email)
 
         dados = {'cliente': visita.cliente.nome,
+                 'imovel':visita.imovel,
                  'datahora': visita.datahora,
                  'corretor': visita.corretor.nome,
                  }
 
         texto_email = render_to_string('emails/texto_email.txt', dados)
         html_email = render_to_string('emails/texto_email.html', dados)
-        send_mail(subject='JATIMOV - Visita Agendada',
+        send_mail(subject='JATIMOV - Visita Concluída',
                   message = texto_email,
                   from_email = 'chnnegri@gmail.com',
                   recipient_list = email,
