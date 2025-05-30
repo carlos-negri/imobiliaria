@@ -18,3 +18,10 @@ class Transacao(models.Model):
     corretor = models.ForeignKey(corretores.models.Corretor, verbose_name='Corretor', help_text='Nome do corretor', on_delete=models.CASCADE, related_name='corretorTransacao', default='')
     tipo = models.CharField('Tipo de transação', blank=True, choices=TRANSACAO_CHOICES) # Tipo
     valor = models.DecimalField('Valor da transação', max_digits=1000000, decimal_places=2, default=0)
+
+    class Meta:
+        unique_together=('imovel', 'cliente', 'tipo')
+        verbose_name = 'Imóvel do proprietário'
+        verbose_name_plural = 'Imóveis do proprietário'
+
+
