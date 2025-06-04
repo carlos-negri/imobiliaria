@@ -1,0 +1,14 @@
+Ola {{cliente|upper}}!
+Estamos enviando este e-mail para comunicar que deu tudo certo com o seu processo de {{ tipo|lower }}!
+
+Dados da transação
+Imóvel:  {{ imovel }}
+Endereço: {{ imovel.endereco }}
+Tipo: { tipo }}
+Valor de {{ tipo }}: {{ valor }}
+Corretor responsavel pela transação: {{ corretor }}
+
+
+Esperamos que seu novo lar seja encantador igual você!
+
+JATIMOV

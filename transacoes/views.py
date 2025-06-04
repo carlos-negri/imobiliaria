@@ -1,5 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.core.mail import send_mail
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.messages.views import SuccessMessageMixin
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator
@@ -29,20 +31,38 @@ class TransacaoAddView(SuccessMessageMixin,CreateView):
     template_name = 'transacao_form.html'
     success_url = reverse_lazy('transacoes')
 
+    def post (self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            transacao = form.save(commit=True)
+            if transacao:
+                self.enviar_email(transacao)
+        return redirect('transacoes')
 
-class AluguelAddView(SuccessMessageMixin,CreateView):
-    model = Transacao
-    form_class = TransacaoModelForm
-    template_name = 'transacao_aluguel.html'
-    success_url = reverse_lazy('transacoes')
-    success_message = 'Aluguel cadastrado com sucesso'
+    def enviar_email(self, transacao):
+        email = []
+        email.append(transacao.cliente.email)
 
-class VendaAddView(SuccessMessageMixin,CreateView):
-    model = Transacao
-    form_class = TransacaoModelForm
-    template_name = 'transacao_venda.html'
-    success_url = reverse_lazy('transacoes')
-    success_message = 'Venda cadastrada com sucesso'
+        dados = {'cliente': transacao.cliente.nome,
+                 'proprietario': transacao.proprietario.nome,
+                 'imovel':transacao.imovel,
+                 'endereco': transacao.imovel.endereco,
+                 'corretor': transacao.corretor.nome,
+                 'tipo': transacao.get_tipo_display,
+                 'valor': transacao.valor,
+                 }
+
+        texto_email = render_to_string('emails/texto.txt', dados)
+        html_email = render_to_string('emails/texto.html', dados)
+        send_mail(subject='JATIMOV - Parabéns!',
+                  message = texto_email,
+                  from_email = 'chnnegri@gmail.com',
+                  recipient_list = email,
+                  html_message = html_email,
+                  fail_silently = False,
+        )
+        return redirect('transacoes')
+
 
 class TransacaoUpdateView(SuccessMessageMixin,UpdateView):
     model = Transacao
@@ -61,6 +81,3 @@ def exibir_transacao(request, pk):
     transacao = get_object_or_404(Transacao, pk=pk)
     return render(request, 'transacao_exibir.html', {'transacao': transacao})
 
-class SelecionarTipoView(ListView):
-    model = Transacao
-    template_name = 'transacao_form.html'

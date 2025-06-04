@@ -41,7 +41,7 @@
                                         <td>{{visita.imovel}}</td>
                                         <td>{{visita.corretor}}</td>
                                         <td>{{visita.cliente}}</td>
-                                        <td>{{visita.situacao}}</td>
+                                        <td>{{visita.get_situacao_display}}</td>
                                         <td style="text-align: center">
                                             {% if visita.situacao != 'CO' %}
                                                 <a class="text-decoration-none" href="{% url 'visita_editar' visita.pk %}">
