@@ -53,7 +53,7 @@ class Imovel (models.Model):
     tem_salao_festa = models.BooleanField(default=False)
 
     #um pra muitos
-    proprietario = models.ForeignKey(proprietarios.models.Proprietario, verbose_name='Proprietário', help_text='Nome do Proprietário', on_delete=models.CASCADE, related_name='proprietario', default='')
+    # proprietario = models.ForeignKey(proprietarios.models.Proprietario, verbose_name='Proprietário', help_text='Nome do Proprietário', on_delete=models.CASCADE, related_name='proprietario', default='')
 
     def __str__(self):
         return self.codigo_unico

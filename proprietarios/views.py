@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.views.generic.base import TemplateResponseMixin, View
 from .forms import ProprietarioModelForm, ImoveisProprietarioInLine
-from .models import Proprietario
+from .models import Proprietario, ImoveisProprietario
 from django.core.paginator import Paginator
 from django.contrib import messages
 
@@ -17,6 +17,11 @@ class ProprietarioView(ListView):
         qs = super(ProprietarioView, self).get_queryset()
         if buscar:
             qs = qs.filter(nome__icontains=buscar)
+
+        for proprietario in qs:
+            imovel = ImoveisProprietario.objects.filter(proprietario=proprietario)
+            imovel.proprietario = imovel
+
         if qs.count()>0:
             paginator = Paginator(qs, 10)
             listagem =paginator.get_page(self.request.GET.get('page'))

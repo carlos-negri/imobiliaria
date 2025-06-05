@@ -22,5 +22,12 @@ class ImoveisProprietario(models.Model):
         verbose_name = 'Imóvel do proprietário'
         verbose_name_plural = 'Imóveis do proprietário'
 
+    def unique_error_message(self, model_class, unique_check): #esse metodo sobrescreve o do django pra tratar essa minha excecao
+        if model_class == type(self) and unique_check == ('proprietario', 'imovel'):
+            return 'Esse imóvel já está associado a esse proprietário'
+        else:
+            return super(ImoveisProprietario, self).unique_error_message(model_class, unique_check)
+
+
     def __str__(self):
         return f'{self.imovel}'

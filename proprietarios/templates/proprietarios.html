@@ -30,6 +30,7 @@
                                 <th>Nome</th>
                                 <th>Fone</th>
                                 <th>Email</th>
+                                <th>Imóveis</th>
                                 <th style="width: 100px; text-align: center">Ações</th>
                             </thead>
                             <tbody>
@@ -39,6 +40,13 @@
 <!--                                        {{ mostra conteudo nome de cliente-->
                                         <td>{{proprietario.fone}}</td>
                                         <td>{{proprietario.email}}</td>
+
+                                        <td>
+<!--                                            {% for imovel in object_list %}-->
+<!--                                            {{proprietario.imovel}}teste-->
+<!--                                            {% endfor %}-->
+                                        </td>
+
                                         <td style="text-align: center">
                                             <a class="text-decoration-none" href="{% url 'proprietario_editar' proprietario.pk %}">
                                                 <span class="icon">

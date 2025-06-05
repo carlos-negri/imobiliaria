@@ -85,7 +85,7 @@ class VisitaExibir(DetailView):
         if visita.situacao!='CO':
             visita.situacao = 'CO'
             visita.save()
-            self.enviar_email(visita)
+            self.enviar_email(visita) 
         return visita
 
     def enviar_email(self, visita):
