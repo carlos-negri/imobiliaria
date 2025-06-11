@@ -7,6 +7,8 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 
 class ClienteView(ListView):
+    permission_required = 'clientes.view_cliente'
+    permission_denied_message = 'Visualizar cliente'
     model = Cliente
     template_name = 'clientes.html'
 
@@ -24,6 +26,8 @@ class ClienteView(ListView):
 
 
 class ClienteAddView(SuccessMessageMixin,CreateView):
+    permission_required = 'clientes.add_cliente'
+    permission_denied_message = 'Cadastrar cliente'
     model = Cliente
     form_class = ClienteModelForm
     template_name = 'cliente_form.html'
@@ -31,6 +35,8 @@ class ClienteAddView(SuccessMessageMixin,CreateView):
     success_message = 'Cliente cadastrado com sucesso'
 
 class ClienteUpdateView(SuccessMessageMixin,UpdateView):
+    permission_required = 'clientes.update_cliente'
+    permission_denied_message = 'Editar cliente'
     model = Cliente
     form_class = ClienteModelForm
     template_name = 'cliente_form.html'
@@ -38,6 +44,8 @@ class ClienteUpdateView(SuccessMessageMixin,UpdateView):
     success_message = 'Cliente atualizado com sucesso'
 
 class ClienteDeleteView(SuccessMessageMixin, DeleteView):
+    permission_required = 'clientes.delete_cliente'
+    permission_denied_message = 'Excluir cliente'
     model = Cliente
     template_name = 'cliente_apagar.html'
     success_url = reverse_lazy('clientes')

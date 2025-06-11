@@ -16,15 +16,19 @@
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            {% if request.user.is_authenticated %}
+                            {% if perms.clientes.add_cliente %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarCliente" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     Clientes
                                 </a>
+
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="{% url 'cliente_adicionar' %}">Cadastrar Cliente</a></li>
                                     <li><a class="dropdown-item" href="{% url 'clientes' %}">Listar Clientes</a></li>
                                 </ul>
+                                {% endif %}
                             </li>
 
                             <li class="nav-item dropdown">
@@ -80,9 +84,35 @@
                                     <li><a class="dropdown-item" href="{% url 'transacao_adicionar' %}">Nova transação</a></li>
                                     <li><a class="dropdown-item" href="{% url 'transacoes' %}">Transações ativas</a></li>
                                 </ul>
-                            </li>
+
+                            <li class ="nav-item-dropdown">
+										<a class="nav-link dropdown-toggle" href="#" id="navbarLogin" role="button"
+											data-bs-toggle="dropdown" aria-expanded="false">
+											Usuário: {{ request.user.username }}
+										</a>
+										<ul class="dropdown-menu">
+											<li><a class="dropdown-item" href="{% url 'alterar_senha' %}">Alterar senha</a></li>
+											<li>
+												<form action="{% url 'logout' %}" method="post">
+													{% csrf_token %}
+													<button class="btn btn-link dropdown-item" type="submit">Log Out</button>
+												</form>
+											</li>
+										</ul>
+									</li>
+									{% else %}
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="#" id="navbarAcesso" role="button"
+											data-bs-toggle="dropdown" aria-expanded="false">
+											Acesso
+										</a>
+										<ul class="dropdown-menu">
+											<li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+										</ul>
+									</li>
 
                         </ul>
+                        {% endif %}
                     </div>
                 </div>
             </nav>

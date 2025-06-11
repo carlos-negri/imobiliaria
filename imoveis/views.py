@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import get_object_or_404, render, redirect
 from django.template.context_processors import request
@@ -10,7 +11,9 @@ from .models import Imovel
 from django.core.paginator import Paginator
 from django.contrib import messages
 
-class ImovelView(ListView):
+class ImovelView(PermissionRequiredMixin, ListView):
+    permission_required = 'imoveis.view_imovel'
+    permission_denied_message = 'Visualizar imóvel'
     model = Imovel
     template_name = 'imoveis.html'
 
@@ -27,21 +30,27 @@ class ImovelView(ListView):
             return messages.info(self.request, 'Não existem imóveis cadastrados!')
 
 
-class ImovelAddView(SuccessMessageMixin,CreateView):
+class ImovelAddView(PermissionRequiredMixin,SuccessMessageMixin,CreateView):
+    permission_required = 'imoveis.add_imovel'
+    permission_denied_message = 'Cadastrar imóvel'
     model = Imovel
     form_class = ImovelModelForm
     template_name = 'imovel_form.html'
     success_url = reverse_lazy('imoveis')
     success_message = 'Imóvel cadastrado com sucesso'
 
-class ImovelUpdateView(SuccessMessageMixin, UpdateView):
+class ImovelUpdateView(PermissionRequiredMixin,SuccessMessageMixin, UpdateView):
+    permission_required = 'imoveis.update_imovel'
+    permission_denied_message = 'Editar imóvel'
     model = Imovel
     form_class = ImovelModelForm
     template_name = 'imovel_form.html'
     success_url = reverse_lazy('imoveis')
     success_message = 'Imóvel atualizado com sucesso'
 
-class ImovelDeleteView(SuccessMessageMixin, DeleteView):
+class ImovelDeleteView(PermissionRequiredMixin,SuccessMessageMixin, DeleteView):
+    permission_required = 'imoveis.delete_imovel'
+    permission_denied_message = 'Excluir imóvel'
     model = Imovel
     template_name = 'imovel_apagar.html'
     success_url = reverse_lazy('imoveis')

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -8,7 +9,9 @@ from .models import Proprietario, ImoveisProprietario
 from django.core.paginator import Paginator
 from django.contrib import messages
 
-class ProprietarioView(ListView):
+class ProprietarioView(PermissionRequiredMixin,ListView):
+    permission_required = 'proprietarios.view_proprietario'
+    permission_denied_message = 'Visualizar proprietário'
     model = Proprietario
     template_name = 'proprietarios.html'
 
@@ -30,27 +33,33 @@ class ProprietarioView(ListView):
             return messages.info(self.request, 'Não existem proprietários cadastrados!')
 
 
-class ProprietarioAddView(SuccessMessageMixin,CreateView):
+class ProprietarioAddView(PermissionRequiredMixin,SuccessMessageMixin,CreateView):
+    permission_required = 'proprietarios.add_proprietario'
+    permission_denied_message = 'Cadastrar proprietário'
     model = Proprietario
     form_class = ProprietarioModelForm
     template_name = 'proprietario_form.html'
     success_url = reverse_lazy('proprietarios')
     success_message = 'Proprietário cadastrado com sucesso'
 
-class ProprietarioUpdateView(SuccessMessageMixin, UpdateView):
+class ProprietarioUpdateView(PermissionRequiredMixin,SuccessMessageMixin, UpdateView):
+    permission_required = 'proprietarios.update_proprietario'
+    permission_denied_message = 'Editar proprietário'
     model = Proprietario
     form_class = ProprietarioModelForm
     template_name = 'proprietario_form.html'
     success_url = reverse_lazy('proprietarios')
     success_message = 'Proprietário atualizado com sucesso'
 
-class ProprietarioDeleteView(SuccessMessageMixin, DeleteView):
+class ProprietarioDeleteView(PermissionRequiredMixin,SuccessMessageMixin, DeleteView):
+    permission_required = 'proprietarios.delete_proprietario'
+    permission_denied_message = 'Excluir proprietário'
     model = Proprietario
     template_name = 'proprietario_apagar.html'
     success_url = reverse_lazy('proprietarios')
     success_message = 'Proprietário apagado com sucesso'
 
-class ProprietarioInLineEditView(TemplateResponseMixin, View):
+class ProprietarioInLineEditView(PermissionRequiredMixin,TemplateResponseMixin, View):
     template_name = 'proprietario_inline.html'
 
     def get_formset(self, data=None):

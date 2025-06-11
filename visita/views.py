@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
 from django.shortcuts import redirect
@@ -9,7 +10,9 @@ from .models import Visita
 from django.core.paginator import Paginator
 from django.contrib import messages
 
-class VisitaView(ListView):
+class VisitaView(PermissionRequiredMixin,ListView):
+    permission_required = 'visitas.view_visita'
+    permission_denied_message = 'Visualizar visita'
     model = Visita
     template_name = 'visitas.html'
 
@@ -26,7 +29,9 @@ class VisitaView(ListView):
             return messages.info(self.request, 'Não existem visitas agendadas!')
 
 
-class VisitaAddView(SuccessMessageMixin,CreateView):
+class VisitaAddView(PermissionRequiredMixin,SuccessMessageMixin,CreateView):
+    permission_required = 'visitas.add_visita'
+    permission_denied_message = 'Cadastrar visita'
     model = Visita
     form_class = VisitaModelForm
     template_name = 'visitas_form.html'
@@ -63,14 +68,18 @@ class VisitaAddView(SuccessMessageMixin,CreateView):
         )
         return redirect('visitas')
 
-class VisitaUpdateView(SuccessMessageMixin,UpdateView):
+class VisitaUpdateView(PermissionRequiredMixin,SuccessMessageMixin,UpdateView):
+    permission_required = 'visitas.update_visita'
+    permission_denied_message = 'Editar visita'
     model = Visita
     form_class = VisitaModelForm
     template_name = 'visitas_form.html'
     success_url = reverse_lazy('visitas')
     success_message = 'Visita atualizada com sucesso'
 
-class VisitaDeleteView(SuccessMessageMixin, DeleteView):
+class VisitaDeleteView(PermissionRequiredMixin,SuccessMessageMixin, DeleteView):
+    permission_required = 'visitas.delete_visita'
+    permission_denied_message = 'Excluir visita'
     model = Visita
     template_name = 'visita_apagar.html'
     success_url = reverse_lazy('visitas')

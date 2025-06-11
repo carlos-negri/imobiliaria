@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.messages.views import SuccessMessageMixin
@@ -9,7 +10,9 @@ from django.contrib import messages
 from .forms import TransacaoModelForm
 from .models import Transacao
 
-class TransacaoView(ListView):
+class TransacaoView(PermissionRequiredMixin,ListView):
+    permission_required = 'transacoes.view_transacao'
+    permission_denied_message = 'Visualizar transação'
     model = Transacao
     template_name = 'transacoes.html'
 
@@ -25,7 +28,9 @@ class TransacaoView(ListView):
         else:
             return messages.info(self.request, 'Não existem transações cadastradas!')
 
-class TransacaoAddView(SuccessMessageMixin,CreateView):
+class TransacaoAddView(PermissionRequiredMixin,SuccessMessageMixin,CreateView):
+    permission_required = 'transacoes.add_transacao'
+    permission_denied_message = 'Cadastrar transação'
     model = Transacao
     form_class = TransacaoModelForm
     template_name = 'transacao_form.html'
@@ -64,14 +69,18 @@ class TransacaoAddView(SuccessMessageMixin,CreateView):
         return redirect('transacoes')
 
 
-class TransacaoUpdateView(SuccessMessageMixin,UpdateView):
+class TransacaoUpdateView(PermissionRequiredMixin,SuccessMessageMixin,UpdateView):
+    permission_required = 'transacoes.update_transacao'
+    permission_denied_message = 'Editar transação'
     model = Transacao
     form_class = TransacaoModelForm
     template_name = 'transacao_form.html'
     success_url = reverse_lazy('transacoes')
     success_message = 'Transacão atualizada com sucesso'
 
-class TransacaoDeleteView(SuccessMessageMixin, DeleteView):
+class TransacaoDeleteView(PermissionRequiredMixin,SuccessMessageMixin, DeleteView):
+    permission_required = 'transacoes.delete_transacao'
+    permission_denied_message = 'Excluir transação'
     model = Transacao
     template_name = 'transacao_apagar.html'
     success_url = reverse_lazy('transacoes')

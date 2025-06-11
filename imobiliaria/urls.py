@@ -12,5 +12,5 @@ urlpatterns = [
     path('', include ('proprietarios.urls')),
     path('', include('corretores.urls')),
     path('', include('imoveis.urls')),
-    path('', include('transacoes.urls'))
+    path('', include('transacoes.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
