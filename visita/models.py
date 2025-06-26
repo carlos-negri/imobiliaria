@@ -24,4 +24,4 @@ class Visita(models.Model):
     situacao = models.CharField('Situação da visita', max_length=100, blank=True, choices=SITUACAO_CHOICES) # Situação
 
     def __str__(self):
-        return f"Visita no imóvel {self.imovel}. Cliente:  {self.cliente}. Corretor: {self.corretor} | Situação: {self.situacao}"
+        return f"Visita no imóvel {self.imovel}. Cliente:  {self.cliente}. Corretor: {self.corretor} | Situação: {self.situacao} | Data: {self.datahora}"

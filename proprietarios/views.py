@@ -60,6 +60,8 @@ class ProprietarioDeleteView(PermissionRequiredMixin,SuccessMessageMixin, Delete
     success_message = 'Proprietário apagado com sucesso'
 
 class ProprietarioInLineEditView(PermissionRequiredMixin,TemplateResponseMixin, View):
+    permission_required = 'proprietarios.inline_proprietario'
+    permission_denied_message = 'Você não tem permissão para acessar este módulo'
     template_name = 'proprietario_inline.html'
 
     def get_formset(self, data=None):
