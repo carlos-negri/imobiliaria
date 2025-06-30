@@ -115,10 +115,21 @@
                                     </li>
                                 </ul>
                             </li>
-
+                            {% else %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarAcesso" role="button"
+											data-bs-toggle="dropdown" aria-expanded="false">
+											Acesso
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+                                </ul>
+                            </li>
 
                         </ul>
                         {% endif %}
+
+
                     </div>
                 </div>
             </nav>

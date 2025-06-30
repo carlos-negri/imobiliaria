@@ -45,13 +45,18 @@
               <i class="bi bi-house-door me-2"></i> {{ imovel.quartos }} quartos<br>
               <i class="bi bi-currency-dollar me-2"></i> R$ {{ imovel.valor_iptu|floatformat:2 }}
             </p>
-            <div class="mt-auto d-flex justify-content-between align-items-center">
+            <div class="mt-auto d-flex justify-content-end align-items-center">
               <a href="{% url 'imovel_exibir' imovel.id %}" class="btn btn-primary btn-sm">
                 Ver mais
               </a>
               {% if perms.imoveis.update_imovel %}
               <a href="{% url 'imovel_editar' imovel.pk %}" class="btn btn-outline-secondary btn-sm" title="Editar imóvel">
                 <i class="bi bi-pencil-square"></i>
+              </a>
+              {% endif %}
+              {% if perms.imoveis.delete_imovel %}
+              <a href="{% url 'imovel_apagar' imovel.pk %}" class="text-danger" title="Excluir">
+                <i class="bi bi-trash3-fill fs-5"></i>
               </a>
               {% endif %}
             </div>

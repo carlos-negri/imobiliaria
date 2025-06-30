@@ -1,7 +1,7 @@
 {% extends "principal.html" %}
 {% load static %}
 {% block content %}
-{% if user.is_authenticated %}
+
 
 <section class="py-3 text-white text-center" style="background: linear-gradient(135deg, #191970, #4169e1);">
     <div class="container d-flex flex-column flex-md-row align-items-center justify-content-center gap-3">
@@ -11,6 +11,7 @@
             <p class="display-6">Seu imóvel dos sonhos está aqui</p>
         </div>
     </div>
+    {% if user.is_authenticated %}
     <div class="container py-3">
         <h2 class="text-center mb-4">Acesso Rápido</h2>
         <div class="row g-4 justify-content-center">
@@ -58,6 +59,17 @@
         </div>
     </div>
 </section>
+    {% else %}
+    <div class="container py-3">
+        <h2 class="text-center mb-4">Identifique-se para aproveitar todas as nossas funcionalidades!</h2>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4 col-lg-3">
+                <a href="{% url 'login' %}" class="btn btn-primary w-100 py-3">
+                    <i class="bi bi-people-fill me-2"></i>Fazer login</a>
+            </div>
+        </div>
+    </div>
+{% endif %}
 
 <section class="container py-5">
     <h2 class="text-center mb-4">Imóveis em Destaque</h2>
@@ -76,7 +88,9 @@
                         <i class="bi bi-house-door"></i> {{ imovel.quartos }} quartos<br>
                         <i class="bi bi-currency-dollar"></i> R$ {{ imovel.valor_iptu|floatformat:"2" }}
                     </p>
+                    {% if user.is_authenticated %}
                     <a href="{% url 'imovel_exibir' imovel.pk %}" class="btn btn-primary w-100">Ver detalhes</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -85,6 +99,4 @@
         {% endfor %}
     </div>
 </section>
-
-{% endif %}
 {% endblock %}
