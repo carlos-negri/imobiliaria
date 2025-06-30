@@ -20,7 +20,7 @@ class VisitaView(PermissionRequiredMixin,ListView):
         buscar = self.request.GET.get('buscar')
         qs = super(VisitaView, self).get_queryset()
         if buscar:
-            qs = qs.filter(nome__icontains=buscar)
+            qs = qs.filter(datahora__icontains=buscar)
         if qs.count()>0:
             paginator = Paginator(qs, 10)
             listagem =paginator.get_page(self.request.GET.get('page'))

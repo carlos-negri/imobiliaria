@@ -2,83 +2,92 @@
 {% load django_bootstrap5 %}
 {% load static %}
 {% block content %}
-    <section class="section">
-        <div class="container">
-            <form action="" method="GET">
-                <div class="form-group row p-3">
-                    <label class="col-sm-2 col-form-label">Nome do proprietário: </label>
-                    <div class="col-sm-8">
-                        <input class="form-control" type="text" name="buscar" value="{{ request.GET.buscar }}"
-                               placeholder="Digite o nome do proprietário">
-                    </div>
-                    <div class="col-sm-2">
-                        <button type="submit" class="btn btn-primary">
-                            Buscar
-                        </button>
-                    </div>
-                </div>
-            </form>
-            {% if object_list %}
-<!--            {% indica bloco de instruçoes-->
-<!--            mostra as coisa se tiver gente dentro da lista/se a lista nao tiver vazia-->
-                <div class="card-body">
-                    <h3 class="text-center">Proprietários Cadastrados</h3>
 
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
+<section class="py-5">
+    <div class="container">
+
+        <!-- Barra de busca -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <form action="" method="GET">
+                    <div class="row align-items-center g-3">
+                        <div class="col-md-3 text-md-end">
+                            <label class="col-form-label fw-bold">Nome do proprietário:</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input class="form-control" type="text" name="buscar" value="{{ request.GET.buscar }}"
+                                   placeholder="Digite o nome do proprietário">
+                        </div>
+                        <div class="col-md-3 text-md-start">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-search me-1"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Lista de proprietários -->
+        {% if object_list %}
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="text-center mb-4">🏠 Proprietários Cadastrados</h3>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-primary text-center">
+                            <tr>
                                 <th>Nome</th>
                                 <th>Fone</th>
                                 <th>Email</th>
                                 <th>Imóveis</th>
-                                <th style="width: 100px; text-align: center">Ações</th>
-                            </thead>
-                            <tbody>
+                                <th style="width: 120px;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             {% for proprietario in object_list %}
-                                    <tr>
-                                        <td>{{proprietario.nome}}</td>
-<!--                                        {{ mostra conteudo nome de cliente-->
-                                        <td>{{proprietario.fone}}</td>
-                                        <td>{{proprietario.email}}</td>
-
-                                        <td>
-<!--                                            {% for imovel in object_list %}-->
-<!--                                            {{proprietario.imovel}}teste-->
-<!--                                            {% endfor %}-->
-                                        </td>
-
-                                        <td style="text-align: center">
-                                            <a class="text-decoration-none" href="{% url 'proprietario_editar' proprietario.pk %}">
-                                                <span class="icon">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </span>
-                                            </a>
-                                            <a class="text-decoration-none" href="{% url 'proprietario_apagar' proprietario.pk %}">
-                                                <span class="icon">
-                                                    <i class="bi bi-trash3-fill"></i>
-                                                </span>
-                                            </a>
-                                                {% if perms.servicos.add_produtosservico %}
-                                            <a href="{% url 'proprietario_inline' proprietario.pk %}">
-                                                <span class="icon">
-                                                    <i class="bi bi-pencil"></i>
-                                                </span>
-                                            </a>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
+                            <tr>
+                                <td>{{ proprietario.nome }}</td>
+                                <td>{{ proprietario.fone }}</td>
+                                <td>{{ proprietario.email }}</td>
+                                <td>{{ proprietario.imovel_set.count }} imóvel(is)</td>
+                                <td class="text-center">
+                                    <a href="{% url 'proprietario_editar' proprietario.pk %}" class="text-primary me-2" title="Editar">
+                                        <i class="bi bi-pencil-square fs-5"></i>
+                                    </a>
+                                    <a href="{% url 'proprietario_apagar' proprietario.pk %}" class="text-danger me-2" title="Excluir">
+                                        <i class="bi bi-trash3-fill fs-5"></i>
+                                    </a>
+                                    {% if perms.servicos.add_produtosservico %}
+                                    <a href="{% url 'proprietario_inline' proprietario.pk %}" class="text-secondary" title="Inline Edit">
+                                        <i class="bi bi-pencil fs-5"></i>
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
                             {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        {% bootstrap_pagination object_list url="/proprietarios?page=1" size="sm" %}
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
-            {% else %}
-                <h5>Não existem proprietários cadastrados!</h5>
-            <a class="btn btn-primary btn-lg text-white" href="{% url 'proprietario_adicionar' %}" role="button">Cadastrar proprietário</a>
-            {% endif %}
+
+                <!-- Paginação -->
+                <div class="d-flex justify-content-center mt-3">
+                    {% bootstrap_pagination object_list url="/proprietarios?page=1" size="sm" %}
+                </div>
+            </div>
         </div>
-    </section>
+
+        {% else %}
+        <!-- Se não houver proprietários -->
+        <div class="text-center py-5">
+            <h4 class="mb-4">🚫 Nenhum proprietário encontrado.</h4>
+            <a href="{% url 'proprietario_adicionar' %}" class="btn btn-success btn-lg">
+                <i class="bi bi-person-plus-fill me-2"></i> Cadastrar novo proprietário
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
 {% endblock %}

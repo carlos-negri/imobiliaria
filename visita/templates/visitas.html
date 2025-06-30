@@ -2,88 +2,92 @@
 {% load django_bootstrap5 %}
 {% load static %}
 {% block content %}
-    <section class="section">
-        <div class="container">
-            <form action="" method="GET">
-                <div class="form-group row p-3">
-                    <label class="col-sm-2 col-form-label">Visitas: </label>
-                    <div class="col-sm-8">
-                        <input class="form-control" type="text" name="buscar" value="{{ request.GET.buscar }}"
-                               placeholder="Pesquisar visitas">
-                    </div>
-                    <div class="col-sm-2">
-                        <button type="submit" class="btn btn-primary">
-                            Buscar
-                        </button>
-                    </div>
-                </div>
-            </form>
-            {% if object_list %}
-<!--            {% indica bloco de instruçoes-->
-<!--            mostra as coisa se tiver gente dentro da lista/se a lista nao tiver vazia-->
-                <div class="card-body">
-                    <h3 class="text-center">Visitas agendadas</h3>
+<section class="py-5">
+  <div class="container">
 
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <th>Data e hora</th>
-                                <th>Código do Imóvel</th>
-                                <th>Corretor</th>
-                                <th>Cliente</th>
-                                <th>SITUAÇÃO</th>
-                                <th style="width: 100px; text-align: center">Ações</th>
-                            </thead>
-                            <tbody>
-                            {% for visita in object_list %}
-                                    <tr>
-                                        <td>{{visita.datahora}}</td>
-                                        <td>{{visita.imovel}}</td>
-                                        <td>{{visita.corretor}}</td>
-                                        <td>{{visita.cliente}}</td>
-                                        <td>{{visita.get_situacao_display}}</td>
-                                        <td style="text-align: center">
-                                            {% if visita.situacao != 'CO' %}
-                                                <a class="text-decoration-none" href="{% url 'visita_editar' visita.pk %}">
-                                                    <span class="icon">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </span>
-                                                </a>
-                                                <a class="text-decoration-none" href="{% url 'visita_apagar' visita.pk %}">
-                                                    <span class="icon">
-                                                        <i class="bi bi-trash3-fill"></i>
-                                                    </span>
-                                                </a>
-                                            {% else %}
-                                                <span class="icon">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </span>
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <form action="" method="GET">
+          <div class="row align-items-center g-3">
+            <div class="col-md-3 text-md-end">
+              <label class="col-form-label fw-bold">Visitas:</label>
+            </div>
+            <div class="col-md-6">
+              <input class="form-control" type="text" name="buscar" value="{{ request.GET.buscar }}" placeholder="Pesquisar visitas">
+            </div>
+            <div class="col-md-3 text-md-start">
+              <button type="submit" class="btn btn-primary w-100">
+                <i class="bi bi-search me-1"></i> Buscar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
 
-                                                <span class="icon">
-                                                    <i class="bi bi-trash3-fill"></i>
-                                                </span>
-                                            {% endif %}
-                                            <a href="{% url 'visita_exibir' visita.pk %}">
-                                                <span class="icon">
-                                                    <i class="bi bi-check-circle"></i>
-                                                </span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        {% bootstrap_pagination object_list url="/visita?page=1" size="sm" %}
-                    </div>
-                </div>
-            {% else %}
-                <h5>Não existem visitas agendadas!</h5>
-                <a class="btn btn-primary btn-lg text-white" href="{% url 'visita_adicionar' %}" role="button">Agendar visita</a>
-                </button>
-            {% endif %}
-
+    {% if object_list %}
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h3 class="text-center mb-4">📅 Visitas Agendadas</h3>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead class="table-primary text-center">
+              <tr>
+                <th>Data e hora</th>
+                <th>Código do Imóvel</th>
+                <th>Corretor</th>
+                <th>Cliente</th>
+                <th>Situação</th>
+                <th style="width: 120px;">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for visita in object_list %}
+              <tr>
+                <td>{{ visita.datahora }}</td>
+                <td>{{ visita.imovel }}</td>
+                <td>{{ visita.corretor }}</td>
+                <td>{{ visita.cliente }}</td>
+                <td>{{ visita.get_situacao_display }}</td>
+                <td class="text-center">
+                  {% if visita.situacao != 'CO' %}
+                  <a href="{% url 'visita_editar' visita.pk %}" class="text-primary me-2" title="Editar">
+                    <i class="bi bi-pencil-square fs-5"></i>
+                  </a>
+                  <a href="{% url 'visita_apagar' visita.pk %}" class="text-danger me-2" title="Excluir">
+                    <i class="bi bi-trash3-fill fs-5"></i>
+                  </a>
+                  {% else %}
+                  <span class="text-muted me-3" title="Não pode editar/excluir">
+                    <i class="bi bi-pencil-square"></i>
+                  </span>
+                  <span class="text-muted me-3" title="Não pode editar/excluir">
+                    <i class="bi bi-trash3-fill"></i>
+                  </span>
+                  {% endif %}
+                  <a href="{% url 'visita_exibir' visita.pk %}" class="text-success" title="Visualizar">
+                    <i class="bi bi-check-circle fs-5"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
-    </section>
+        <div class="d-flex justify-content-center mt-3">
+          {% bootstrap_pagination object_list url="/visita?page=1" size="sm" %}
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+      <h5>🚫 Não existem visitas agendadas!</h5>
+      <a href="{% url 'visita_adicionar' %}" class="btn btn-success btn-lg mt-3">
+        <i class="bi bi-calendar-plus me-2"></i> Agendar visita
+      </a>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
 {% endblock %}

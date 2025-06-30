@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 from .forms import TransacaoModelForm
 from .models import Transacao
+from django.db.models import Q
 
 class TransacaoView(PermissionRequiredMixin,ListView):
     permission_required = 'transacoes.view_transacao'
@@ -20,7 +21,11 @@ class TransacaoView(PermissionRequiredMixin,ListView):
         buscar = self.request.GET.get('buscar')
         qs = super(TransacaoView, self).get_queryset()
         if buscar:
-            qs = qs.filter(codigo_unico__icontains=buscar)
+            qs = qs.filter(
+                Q(proprietario__nome__icontains=buscar) |
+                Q(cliente__nome__icontains=buscar) |
+                Q(corretor__nome__icontains=buscar)
+            )
         if qs.count()>0:
             paginator = Paginator(qs, 10)
             listagem =paginator.get_page(self.request.GET.get('page'))

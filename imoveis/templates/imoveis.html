@@ -2,51 +2,75 @@
 {% load django_bootstrap5 %}
 {% load static %}
 {% block content %}
-    <section class="section">
-        <div class="container">
-            <form action="" method="GET">
-                <div class="form-group row p-3">
-                    <label class="col-sm-2 col-form-label">Propriedades do imóvel: </label>
-                    <div class="col-sm-8">
-                        <input class="form-control" type="text" name="buscar" value="{{ request.GET.buscar }}"
-                               placeholder="Digite o código do imóvel">
-                    </div>
-                    <div class="col-sm-2">
-                        <button type="submit" class="btn btn-primary">
-                            Buscar
-                        </button>
-                    </div>
-                </div>
-            </form>
-            {% if object_list %}
-                <h3 class="text-center">Imóveis Cadastrados</h3>
-            {% for imovel in object_list %}
-            <div class="row d-flex flex-nowrap ">
-                    <div class="card" style="width: 18rem;">
-                        {% if imovel.foto %}}
-                      <img class="card-img-top" src="{{ imovel.foto.url }}" alt="Imovel">
-                        {% endif %}
-                      <div class="card-body">
-                        <h5 class="card-title">{{ imovel.get_tipo_imovel_display }} - {{ imovel.endereco }}</h5>
-                        <p class="card-text">
-                            <i class="bi bi-house-door"></i> {{ imovel.quartos }} quartos<br>
-                            <i class="bi bi-currency-dollar"></i> R$ {{ imovel.valor_iptu }}
-                        </p>
-                        <a href="{% url 'imovel_exibir' imovel.id %}" class="btn btn-primary">Ver mais</a>
-                        <a class="text-decoration-none" href="{% url 'imovel_editar' imovel.pk %}">
-                            <span class="icon">
-                            <i class="bi bi-pencil-square"></i>
-                            </span>
-                        </a>
-                      </div>
-                    </div>
-            </div>
-                {% endfor%}
+<section class="py-5">
+  <div class="container">
 
-            {% else %}
-                <h5>Não existem imóveis cadastrados!</h5>
-            <a class="btn btn-primary btn-lg text-white" href="{% url 'imovel_adicionar' %}" role="button">Cadastrar imóvel</a>
-            {% endif %}
+    <!-- Formulário de busca -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <form action="" method="GET">
+          <div class="row align-items-center g-3">
+            <div class="col-md-3 text-md-end">
+              <label class="col-form-label fw-bold">Propriedades do imóvel:</label>
+            </div>
+            <div class="col-md-6">
+              <input class="form-control" type="text" name="buscar" value="{{ request.GET.buscar }}" placeholder="Digite o código do imóvel">
+            </div>
+            <div class="col-md-3 text-md-start">
+              <button type="submit" class="btn btn-primary w-100">
+                <i class="bi bi-search me-1"></i> Buscar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {% if object_list %}
+    <h3 class="text-center mb-4">🏘️ Imóveis Cadastrados</h3>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for imovel in object_list %}
+      <div class="col d-flex">
+        <div class="card shadow-sm flex-fill">
+          {% if imovel.foto %}
+          <img src="{{ imovel.foto.url }}" alt="Foto do imóvel" class="card-img-top rounded-top" style="object-fit: cover; height: 180px;">
+          {% else %}
+          <img src="{% static 'img/default-house.jpg' %}" class="card-img-top" alt="Imagem padrão">
+          {% endif %}
+
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ imovel.get_tipo_imovel_display }} - {{ imovel.endereco }}</h5>
+            <p class="card-text mb-3">
+              <i class="bi bi-house-door me-2"></i> {{ imovel.quartos }} quartos<br>
+              <i class="bi bi-currency-dollar me-2"></i> R$ {{ imovel.valor_iptu|floatformat:2 }}
+            </p>
+            <div class="mt-auto d-flex justify-content-between align-items-center">
+              <a href="{% url 'imovel_exibir' imovel.id %}" class="btn btn-primary btn-sm">
+                Ver mais
+              </a>
+              {% if perms.imoveis.update_imovel %}
+              <a href="{% url 'imovel_editar' imovel.pk %}" class="btn btn-outline-secondary btn-sm" title="Editar imóvel">
+                <i class="bi bi-pencil-square"></i>
+              </a>
+              {% endif %}
+            </div>
+          </div>
+
         </div>
-    </section>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="text-center py-5">
+      <h5>🚫 Não existem imóveis cadastrados!</h5>
+      <a href="{% url 'imovel_adicionar' %}" class="btn btn-success btn-lg mt-3">
+        <i class="bi bi-plus-circle me-2"></i> Cadastrar imóvel
+      </a>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
 {% endblock %}

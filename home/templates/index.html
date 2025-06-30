@@ -1,17 +1,90 @@
 {% extends "principal.html" %}
 {% load static %}
 {% block content %}
-    <section class="section p-2" style="background-color:#191970;">
-        <div class="container text-center text-white">
-            <h1 class="display-1" style="font-weight:bold">JATIMOV</h1>
-            <h1 class="display-4">Seu imóvel dos sonhos está aqui</h1>
+{% if user.is_authenticated %}
+
+<section class="py-3 text-white text-center" style="background: linear-gradient(135deg, #191970, #4169e1);">
+    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-center gap-3">
+        <img src="{% static 'img/logo-branco.png' %}" alt="Logo Jatimov" style="height: 100px;">
+        <div>
+            <h1 class="display-1 fw-bold m-0">JATIMOV</h1>
+            <p class="display-6">Seu imóvel dos sonhos está aqui</p>
         </div>
-    </section>
-      <div class="container-fluid d-flex justify-content-between" style="background-color:#191970;">
-       <a href="{% url 'clientes' %}"><button type="button" class="btn btn-primary btn-lg mx-2">Ver clientes cadastrados</button></a>
-       <a href="{% url 'proprietarios' %}"><button type="button" class="btn btn-primary btn-lg mx-2">Ver proprietários cadastrados</button></a>
-       <a href="{% url 'corretores' %}"><button type="button" class="btn btn-primary btn-lg mx-2">Ver corretores cadastrados</button></a>
-       <a href="{% url 'imoveis' %}"><button type="button" class="btn btn-primary btn-lg mx-2">Ver imóveis cadastrados</button></a>
-       <a href="{% url 'visitas' %}"><button type="button" class="btn btn-primary btn-lg mx-2">Ver visitas cadastradas</button></a>
-      </div>
+    </div>
+    <div class="container py-3">
+        <h2 class="text-center mb-4">Acesso Rápido</h2>
+        <div class="row g-4 justify-content-center">
+
+            {% if perms.clientes.view_cliente %}
+            <div class="col-md-4 col-lg-3">
+                <a href="{% url 'clientes' %}" class="btn btn-primary w-100 py-3">
+                    <i class="bi bi-people-fill me-2"></i> Ver Clientes Cadastrados
+                </a>
+            </div>
+            {% endif %}
+
+            {% if perms.proprietarios.view_proprietario %}
+            <div class="col-md-4 col-lg-3">
+                <a href="{% url 'proprietarios' %}" class="btn btn-success w-100 py-3">
+                    <i class="bi bi-person-badge-fill me-2"></i> Ver Proprietários Cadastrados
+                </a>
+            </div>
+            {% endif %}
+
+            {% if perms.corretores.view_corretor %}
+            <div class="col-md-4 col-lg-3">
+                <a href="{% url 'corretores' %}" class="btn btn-info w-100 py-3">
+                    <i class="bi bi-briefcase-fill me-2"></i> Ver Corretores Cadastrados
+                </a>
+            </div>
+            {% endif %}
+
+            {% if perms.imoveis.view_imovel %}
+            <div class="col-md-4 col-lg-3">
+                <a href="{% url 'imoveis' %}" class="btn btn-warning w-100 py-3">
+                    <i class="bi bi-house-door-fill me-2"></i> Ver Imóveis Cadastrados
+                </a>
+            </div>
+            {% endif %}
+
+            {% if perms.visita.view_visita %}
+            <div class="col-md-4 col-lg-3">
+                <a href="{% url 'visitas' %}" class="btn btn-danger w-100 py-3">
+                    <i class="bi bi-calendar-event-fill me-2"></i> Ver Visitas Cadastradas
+                </a>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+
+<section class="container py-5">
+    <h2 class="text-center mb-4">Imóveis em Destaque</h2>
+    <div class="row g-4 justify-content-center">
+        {% for imovel in ultimos_imoveis %}
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 shadow-sm">
+                {% if imovel.foto %}
+                <img src="{{ imovel.foto.url }}" class="card-img-top" alt="Foto do imóvel">
+                {% else %}
+                <img src="{% static 'img/default-house.jpg' %}" class="card-img-top" alt="Imagem padrão">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ imovel.get_tipo_imovel_display }} - {{ imovel.endereco }}</h5>
+                    <p class="card-text">
+                        <i class="bi bi-house-door"></i> {{ imovel.quartos }} quartos<br>
+                        <i class="bi bi-currency-dollar"></i> R$ {{ imovel.valor_iptu|floatformat:"2" }}
+                    </p>
+                    <a href="{% url 'imovel_exibir' imovel.pk %}" class="btn btn-primary w-100">Ver detalhes</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">Nenhum imóvel cadastrado ainda.</p>
+        {% endfor %}
+    </div>
+</section>
+
+{% endif %}
 {% endblock %}

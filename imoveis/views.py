@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.template.context_processors import request
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.views.generic.base import TemplateResponseMixin, View
+from django.views.generic.base import TemplateResponseMixin, View, TemplateView
 
 from .forms import ImovelModelForm
 from .models import Imovel
@@ -59,4 +59,5 @@ class ImovelDeleteView(PermissionRequiredMixin,SuccessMessageMixin, DeleteView):
 def exibir_imovel(request, pk):
     imovel = get_object_or_404(Imovel, pk=pk)
     return render(request, 'imovel_exibir.html', {'imovel': imovel})
+
 

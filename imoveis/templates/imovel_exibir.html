@@ -1,45 +1,65 @@
 {% extends 'principal.html' %}
 {% load django_bootstrap5 %}
+{% load static %}
 {% block content %}
-<div class="container mt-5">
-    <div class="card shadow">
-        <div class="row g-0">
-            {% if imovel.foto %}
-            <div class="col-md-6 text-center">
-                <img src="{{ imovel.foto.url }}" class="img-fluid rounded-start" alt="{{ imovel.endereco }}">
-            </div>
-            {% endif %}
-            <div class="col-md-6">
-                <div class="card-body">
-                    <h3 class="card-title">{{ imovel.get_tipo_imovel_display }} - {{ imovel.endereco }}</h3>
-                    <p class="text-muted">Código: {{ imovel.codigo_unico }}</p>
 
-                    <div class="mb-3">
-                        <h5>Características</h5>
-                        <ul class="list-unstyled">
-                            <li><strong>Quartos:</strong> {{ imovel.quartos }}</li>
-                            <li><strong>Banheiros:</strong> {{ imovel.banheiros }}</li>
-                            <li><strong>Área Total:</strong> {{ imovel.area_total }} m²</li>
-                            <li><strong>Comodidades: </strong></li>
-                            {% if imovel.tem_piscina %}<li><span class="badge bg-success">Piscina</span></li>{% endif %}
-                            {% if imovel.tem_condominio %}<li><span class="badge bg-success">Condomínio fechado</span></li>{% endif %}
-                            {% if imovel.tem_mobilia %}<li><span class="badge bg-success">Mobiliado</span></li>{% endif %}
-                            {% if imovel.tem_elevador %}<li><span class="badge bg-success">Elevador</span></li>{% endif %}
-                            {% if imovel.tem_lareira %}<li><span class="badge bg-success">Lareira</span></li>{% endif %}
-                            {% if imovel.tem_portaria_24h %}<li><span class="badge bg-success">Portaria 24H</span></li>{% endif %}
-                            {% if imovel.tem_sacada %}<li><span class="badge bg-success">Sacada</span></li>{% endif %}
-                            {% if imovel.tem_salao_festa %}<li><span class="badge bg-success">Salão de festas</span></li>{% endif %}
-                            {% if imovel.tem_financiamento %}<li><span class="badge bg-success">Aceita financiamento</span></li>{% endif %}
+<section class="py-5">
+    <div class="container">
+        <div class="card shadow-lg border-0">
+            <div class="row g-0">
+                {% if imovel.foto %}
+                <div class="col-md-6">
+                    <img src="{{ imovel.foto.url }}" class="img-fluid rounded-start h-100 object-fit-cover" alt="Foto do imóvel">
+                </div>
+                {% else %}
+                <div class="col-md-6 bg-light d-flex align-items-center justify-content-center">
+                    <img src="{% static 'img/default-house.jpg' %}" class="img-fluid p-4" alt="Imagem padrão">
+                </div>
+                {% endif %}
 
-                        </ul>
-                    </div>
+                <div class="col-md-6 d-flex flex-column">
+                    <div class="card-body">
+                        <h3 class="card-title mb-1">
+                            🏠 {{ imovel.get_tipo_imovel_display }} - {{ imovel.endereco }}
+                        </h3>
+                        <p class="text-muted mb-4">🔑 Código: {{ imovel.codigo_unico }}</p>
 
-                    <div class="mt-auto">
-                        <a href="{% url 'imoveis' %}" class="btn btn-secondary">Voltar</a>
+                        <div class="mb-3">
+                            <h5 class="mb-2">🛠️ Características</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>Quartos:</strong> {{ imovel.quartos }}</li>
+                                <li class="list-group-item"><strong>Banheiros:</strong> {{ imovel.banheiros }}</li>
+                                <li class="list-group-item"><strong>Área Total:</strong> {{ imovel.area_total }} m²</li>
+                            </ul>
+                        </div>
+
+
+                        <div class="mb-4">
+                            <h5 class="mb-2">Comodidades</h5>
+                            <div class="d-flex flex-wrap gap-2">
+                                {% if imovel.tem_piscina %}<span class="badge bg-success">Piscina</span>{% endif %}
+                                {% if imovel.tem_condominio %}<span class="badge bg-success">Condomínio fechado</span>{% endif %}
+                                {% if imovel.tem_churrasqueira %}<span class="badge bg-success">Churrasqueira</span>{% endif %}
+                                {% if imovel.tem_mobilia %}<span class="badge bg-success">Mobiliado</span>{% endif %}
+                                {% if imovel.tem_elevador %}<span class="badge bg-success">Elevador</span>{% endif %}
+                                {% if imovel.tem_lareira %}<span class="badge bg-success">Lareira</span>{% endif %}
+                                {% if imovel.tem_portaria_24h %}<span class="badge bg-success">Portaria 24H</span>{% endif %}
+                                {% if imovel.tem_sacada %}<span class="badge bg-success">Sacada</span>{% endif %}
+                                {% if imovel.tem_salao_festa %}<span class="badge bg-success">Salão de festas</span>{% endif %}
+                                {% if imovel.tem_financiamento %}<span class="badge bg-success">Aceita financiamento</span>{% endif %}
+                            </div>
+                        </div>
+
+                        <div class="text-end">
+                            <a href="{% url 'imoveis' %}" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-1"></i> Voltar
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
+
 {% endblock %}

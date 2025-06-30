@@ -26,11 +26,11 @@
 
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="{% url 'cliente_adicionar' %}">Cadastrar Cliente</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'clientes' %}">Listar Clientes</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'clientes' %}">Consultar Clientes</a></li>
                                 </ul>
                                 {% endif %}
                             </li>
-
+                            {% if perms.proprietarios.add_proprietario %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarProprietario" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
@@ -38,43 +38,57 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="{% url 'proprietario_adicionar' %}">Cadastrar Proprietario</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'proprietarios' %}">Listar Proprietários</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'proprietarios' %}">Consultar Proprietários</a></li>
                                 </ul>
                             </li>
+                            {% endif %}
 
+                            {% if perms.corretores.view_corretor %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarCorretor" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     Corretores
                                 </a>
                                 <ul class="dropdown-menu">
+                                    {% if perms.corretores.add_corretor %}
                                     <li><a class="dropdown-item" href="{% url 'corretor_adicionar' %}">Cadastrar Corretor</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'corretores' %}">Listar Corretores</a></li>
+                                    {% endif %}
+                                    <li><a class="dropdown-item" href="{% url 'corretores' %}">Consultar Corretores</a></li>
                                 </ul>
                             </li>
+                            {% endif %}
 
-
+                            {% if perms.imoveis.view_imovel %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarImoveis" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     Imóveis
                                 </a>
                                 <ul class="dropdown-menu">
+                                    {% if perms.imoveis.add_imovel %}
                                     <li><a class="dropdown-item" href="{% url 'imovel_adicionar' %}">Cadastrar Imóvel</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'imoveis' %}">Listar Imóveis</a></li>
+                                    {% endif %}
+                                    <li><a class="dropdown-item" href="{% url 'imoveis' %}">Consultar Imóveis</a></li>
                                 </ul>
                             </li>
+                            {% endif %}
+
+                            {% if perms.visita.view_visita %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarVisitas" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     Visitas
                                 </a>
                                 <ul class="dropdown-menu">
+                                    {% if perms.visita.add_visita %}
                                     <li><a class="dropdown-item" href="{% url 'visita_adicionar' %}">Cadastrar Visita</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'visitas' %}">Listar Visitas</a></li>
+                                    {% endif %}
+                                    <li><a class="dropdown-item" href="{% url 'visitas' %}">Consultar Visitas</a></li>
                                 </ul>
                             </li>
+                            {% endif %}
 
+                            {% if perms.transacoes.view_transacao %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarTransacoes" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
@@ -84,32 +98,24 @@
                                     <li><a class="dropdown-item" href="{% url 'transacao_adicionar' %}">Nova transação</a></li>
                                     <li><a class="dropdown-item" href="{% url 'transacoes' %}">Transações ativas</a></li>
                                 </ul>
+                            {% endif %}
 
-                            <li class ="nav-item-dropdown">
-										<a class="nav-link dropdown-toggle" href="#" id="navbarLogin" role="button"
-											data-bs-toggle="dropdown" aria-expanded="false">
-											Usuário: {{ request.user.username }}
-										</a>
-										<ul class="dropdown-menu">
-											<li><a class="dropdown-item" href="{% url 'alterar_senha' %}">Alterar senha</a></li>
-											<li>
-												<form action="{% url 'logout' %}" method="post">
-													{% csrf_token %}
-													<button class="btn btn-link dropdown-item" type="submit">Log Out</button>
-												</form>
-											</li>
-										</ul>
-									</li>
-									{% else %}
-									<li class="nav-item dropdown">
-										<a class="nav-link dropdown-toggle" href="#" id="navbarAcesso" role="button"
-											data-bs-toggle="dropdown" aria-expanded="false">
-											Acesso
-										</a>
-										<ul class="dropdown-menu">
-											<li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
-										</ul>
-									</li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarLogin" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Usuário: {{ request.user.username }}
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="{% url 'alterar_senha' %}">Alterar senha</a></li>
+                                    <li>
+                                        <form action="{% url 'logout' %}" method="post" class="m-0">
+                                            {% csrf_token %}
+                                            <button class="dropdown-item" type="submit">Sair</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+
 
                         </ul>
                         {% endif %}
