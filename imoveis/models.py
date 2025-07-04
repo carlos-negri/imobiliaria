@@ -27,7 +27,10 @@ class Imovel (models.Model):
     # Campos básicos
     codigo_unico = models.CharField(max_length=50, unique=True)
     endereco = models.CharField(max_length=200)
-    tipo_transacao = models.CharField(max_length=10, choices=[('VENDA', 'Venda'), ('ALUGUEL', 'Aluguel')])
+    tipo_aluguel = models.BooleanField(default=False)
+    tipo_venda = models.BooleanField(default=False)
+    valor_venda = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    valor_aluguel = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     valor_iptu = models.DecimalField(max_digits=10, decimal_places=2)
     valor_condominio = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     area_total = models.DecimalField(max_digits=10, decimal_places=2)
@@ -52,8 +55,6 @@ class Imovel (models.Model):
     tem_sacada = models.BooleanField(default=False)
     tem_salao_festa = models.BooleanField(default=False)
 
-    #um pra muitos
-    # proprietario = models.ForeignKey(proprietarios.models.Proprietario, verbose_name='Proprietário', help_text='Nome do Proprietário', on_delete=models.CASCADE, related_name='proprietario', default='')
 
     def __str__(self):
         return self.codigo_unico

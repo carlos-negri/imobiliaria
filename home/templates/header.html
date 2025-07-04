@@ -1,137 +1,129 @@
 {% load static %}
-<section class="section p-2" style="background-color:#191970">
-        <div class="container">
-            <nav class="navbar navbar-expand-lg" data-bs-theme="dark">
-                <a class="navbar-brand" href="{% url 'index' %}">
-                    <img src="{% static 'img/logo-branco.png'%}" width="50" height="50">
-                </a>
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="{% url 'index' %}">Início</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+<section class="section p-0">
+  <nav class="navbar navbar-expand-lg shadow-sm py-2 text-white" style="background-color:#191970">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand d-flex align-items-center text-white" href="{% url 'index' %}">
+        <img src="{% static 'img/logo-branco.png' %}" alt="Logo" width="40" height="40" class="me-2">
+        <span class="fs-5 fw-bold">JATIMOV</span>
+      </a>
 
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            {% if request.user.is_authenticated %}
-                            {% if perms.clientes.add_cliente %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarCliente" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    Clientes
-                                </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{% url 'cliente_adicionar' %}">Cadastrar Cliente</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'clientes' %}">Consultar Clientes</a></li>
-                                </ul>
-                                {% endif %}
-                            </li>
-                            {% if perms.proprietarios.add_proprietario %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarProprietario" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    Proprietarios
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{% url 'proprietario_adicionar' %}">Cadastrar Proprietario</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'proprietarios' %}">Consultar Proprietários</a></li>
-                                </ul>
-                            </li>
-                            {% endif %}
+      <div class="collapse navbar-collapse" id="navbarContent">
+        {% if request.user.is_authenticated %}
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                            {% if perms.corretores.view_corretor %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarCorretor" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    Corretores
-                                </a>
-                                <ul class="dropdown-menu">
-                                    {% if perms.corretores.add_corretor %}
-                                    <li><a class="dropdown-item" href="{% url 'corretor_adicionar' %}">Cadastrar Corretor</a></li>
-                                    {% endif %}
-                                    <li><a class="dropdown-item" href="{% url 'corretores' %}">Consultar Corretores</a></li>
-                                </ul>
-                            </li>
-                            {% endif %}
+          {% if perms.clientes.add_cliente %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarCliente" role="button" data-bs-toggle="dropdown">
+              <i class="bi bi-person-lines-fill me-1"></i> Clientes
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'cliente_adicionar' %}">Cadastrar Cliente</a></li>
+              <li><a class="dropdown-item" href="{% url 'clientes' %}">Consultar Clientes</a></li>
+            </ul>
+          </li>
+          {% endif %}
 
-                            {% if perms.imoveis.view_imovel %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarImoveis" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    Imóveis
-                                </a>
-                                <ul class="dropdown-menu">
-                                    {% if perms.imoveis.add_imovel %}
-                                    <li><a class="dropdown-item" href="{% url 'imovel_adicionar' %}">Cadastrar Imóvel</a></li>
-                                    {% endif %}
-                                    <li><a class="dropdown-item" href="{% url 'imoveis' %}">Consultar Imóveis</a></li>
-                                </ul>
-                            </li>
-                            {% endif %}
+          {% if perms.proprietarios.add_proprietario %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarProprietario" role="button" data-bs-toggle="dropdown">
+              <i class="bi bi-people-fill me-1"></i> Proprietários
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'proprietario_adicionar' %}">Cadastrar Proprietário</a></li>
+              <li><a class="dropdown-item" href="{% url 'proprietarios' %}">Consultar Proprietários</a></li>
+            </ul>
+          </li>
+          {% endif %}
 
-                            {% if perms.visita.view_visita %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarVisitas" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    Visitas
-                                </a>
-                                <ul class="dropdown-menu">
-                                    {% if perms.visita.add_visita %}
-                                    <li><a class="dropdown-item" href="{% url 'visita_adicionar' %}">Cadastrar Visita</a></li>
-                                    {% endif %}
-                                    <li><a class="dropdown-item" href="{% url 'visitas' %}">Consultar Visitas</a></li>
-                                </ul>
-                            </li>
-                            {% endif %}
+          {% if perms.corretores.view_corretor %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarCorretor" role="button" data-bs-toggle="dropdown">
+              <i class="bi bi-person-workspace me-1"></i> Corretores
+            </a>
+            <ul class="dropdown-menu">
+              {% if perms.corretores.add_corretor %}
+              <li><a class="dropdown-item" href="{% url 'corretor_adicionar' %}">Cadastrar Corretor</a></li>
+              {% endif %}
+              <li><a class="dropdown-item" href="{% url 'corretores' %}">Consultar Corretores</a></li>
+            </ul>
+          </li>
+          {% endif %}
 
-                            {% if perms.transacoes.view_transacao %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarTransacoes" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    Transações
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{% url 'transacao_adicionar' %}">Nova transação</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'transacoes' %}">Transações ativas</a></li>
-                                </ul>
-                            {% endif %}
+          {% if perms.imoveis.view_imovel %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarImoveis" role="button" data-bs-toggle="dropdown">
+              <i class="bi bi-house-door-fill me-1"></i> Imóveis
+            </a>
+            <ul class="dropdown-menu">
+              {% if perms.imoveis.add_imovel %}
+              <li><a class="dropdown-item" href="{% url 'imovel_add_etapa1' %}">Cadastrar Imóvel</a></li>
+              {% endif %}
+              <li><a class="dropdown-item" href="{% url 'imoveis' %}">Consultar Imóveis</a></li>
+            </ul>
+          </li>
+          {% endif %}
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarLogin" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    Usuário: {{ request.user.username }}
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="{% url 'alterar_senha' %}">Alterar senha</a></li>
-                                    <li>
-                                        <form action="{% url 'logout' %}" method="post" class="m-0">
-                                            {% csrf_token %}
-                                            <button class="dropdown-item" type="submit">Sair</button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                            {% else %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarAcesso" role="button"
-											data-bs-toggle="dropdown" aria-expanded="false">
-											Acesso
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
-                                </ul>
-                            </li>
+          {% if perms.visita.view_visita %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarVisitas" role="button" data-bs-toggle="dropdown">
+              <i class="bi bi-calendar-check-fill me-1"></i> Visitas
+            </a>
+            <ul class="dropdown-menu">
+              {% if perms.visita.add_visita %}
+              <li><a class="dropdown-item" href="{% url 'visita_adicionar' %}">Cadastrar Visita</a></li>
+              {% endif %}
+              <li><a class="dropdown-item" href="{% url 'visitas' %}">Consultar Visitas</a></li>
+            </ul>
+          </li>
+          {% endif %}
 
-                        </ul>
-                        {% endif %}
+          {% if perms.transacoes.view_transacao %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarTransacoes" role="button" data-bs-toggle="dropdown">
+              <i class="bi bi-coin me-1"></i> Transações
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'transacao_add_etapa1' %}">Nova transação</a></li>
+              <li><a class="dropdown-item" href="{% url 'transacoes' %}">Transações ativas</a></li>
+            </ul>
+          </li>
+          {% endif %}
+        </ul>
 
 
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </section>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center text-white" href="#" id="navbarUser" role="button"
+              data-bs-toggle="dropdown">
+              <i class="bi bi-person-circle me-1"></i> {{ request.user.username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="{% url 'alterar_senha' %}">Alterar senha</a></li>
+              <li>
+                <form action="{% url 'logout' %}" method="post" class="m-0">
+                  {% csrf_token %}
+                  <button class="dropdown-item text-danger" type="submit">Sair</button>
+                </form>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        {% else %}
+
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-white">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">
+              <i class="bi bi-box-arrow-in-right me-1"></i> Login
+            </a>
+          </li>
+        </ul>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+</section>

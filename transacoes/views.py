@@ -4,10 +4,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.messages.views import SuccessMessageMixin
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from django.core.paginator import Paginator
 from django.contrib import messages
-from .forms import TransacaoModelForm
+from .forms import TransacaoModelForm, TransacaoEtapa1Form, TransacaoEtapa2Form
 from .models import Transacao
 from django.db.models import Q
 
@@ -32,6 +32,32 @@ class TransacaoView(PermissionRequiredMixin,ListView):
             return listagem
         else:
             return messages.info(self.request, 'Não existem transações cadastradas!')
+
+class TransacaoAddEtapa1View(PermissionRequiredMixin, FormView):
+    permission_required = 'transacoes.add_transacao'
+    template_name = 'transacao_form_1.html'
+    form_class = TransacaoEtapa1Form
+
+    def form_valid(self, form):
+        self.request.session['dados_etapa1'] = form.cleaned_data
+        return redirect('transacao_add_etapa2')
+
+class TransacaoAddEtapa2View(PermissionRequiredMixin, FormView):
+    permission_required = 'transacoes.add_transacao'
+    template_name = 'transacao_form_2.html'
+    form_class = TransacaoEtapa2Form
+
+    def form_valid(self, form):
+        dados_etapa1 = self.request.session.get('dados_etapa1')
+
+        if not dados_etapa1:
+            messages.error(self.request, 'Erro: dados da primeira etapa não encontrados.')
+            return redirect('transacao_add_etapa1')
+
+        transacao = Transacao(**dados_etapa1, **form.cleaned_data)
+        transacao.save()
+        messages.success(self.request, 'Transação cadastrada com sucesso.')
+        return redirect('transacoes')
 
 class TransacaoAddView(PermissionRequiredMixin,SuccessMessageMixin,CreateView):
     permission_required = 'transacoes.add_transacao'

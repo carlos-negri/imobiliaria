@@ -43,9 +43,15 @@
             <h5 class="card-title">{{ imovel.get_tipo_imovel_display }} - {{ imovel.endereco }}</h5>
             <p class="card-text mb-3">
               <i class="bi bi-house-door me-2"></i> {{ imovel.quartos }} quartos<br>
-              <i class="bi bi-currency-dollar me-2"></i> R$ {{ imovel.valor_iptu|floatformat:2 }}
+              <i class="bi bi-currency-dollar me-2"></i> IPTU: R$ {{ imovel.valor_iptu|floatformat:2 }}<br>
+              {% if imovel.valor_venda %}
+              <i class="bi bi-currency-dollar me-2"></i> VENDA: R$ {{ imovel.valor_venda|floatformat:2 }}<br>
+              {% endif %}
+              {% if imovel.valor_aluguel %}
+              <i class="bi bi-currency-dollar me-2"></i> ALUGUEL: R$ {{ imovel.valor_aluguel|floatformat:2 }}
+              {% endif %}
             </p>
-            <div class="mt-auto d-flex justify-content-end align-items-center">
+            <div class="mt-auto d-flex justify-content-between align-items-center">
               <a href="{% url 'imovel_exibir' imovel.id %}" class="btn btn-primary btn-sm">
                 Ver mais
               </a>
@@ -70,7 +76,7 @@
     {% else %}
     <div class="text-center py-5">
       <h5>🚫 Não existem imóveis cadastrados!</h5>
-      <a href="{% url 'imovel_adicionar' %}" class="btn btn-success btn-lg mt-3">
+      <a href="{% url 'imovel_add_etapa1' %}" class="btn btn-success btn-lg mt-3">
         <i class="bi bi-plus-circle me-2"></i> Cadastrar imóvel
       </a>
     </div>

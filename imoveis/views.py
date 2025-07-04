@@ -3,10 +3,10 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import get_object_or_404, render, redirect
 from django.template.context_processors import request
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from django.views.generic.base import TemplateResponseMixin, View, TemplateView
 
-from .forms import ImovelModelForm
+from .forms import ImovelEtapa2Form, ImovelEtapa1Form, ImovelModelForm
 from .models import Imovel
 from django.core.paginator import Paginator
 from django.contrib import messages
@@ -30,21 +30,38 @@ class ImovelView(PermissionRequiredMixin, ListView):
             return messages.info(self.request, 'Não existem imóveis cadastrados!')
 
 
-class ImovelAddView(PermissionRequiredMixin,SuccessMessageMixin,CreateView):
+class ImovelAddEtapa1View(PermissionRequiredMixin, FormView):
     permission_required = 'imoveis.add_imovel'
-    permission_denied_message = 'Cadastrar imóvel'
-    model = Imovel
-    form_class = ImovelModelForm
-    template_name = 'imovel_form.html'
-    success_url = reverse_lazy('imoveis')
-    success_message = 'Imóvel cadastrado com sucesso'
+    template_name = 'imovel_form_1.html'
+    form_class = ImovelEtapa1Form
+
+    def form_valid(self, form):
+        self.request.session['dados_etapa1'] = form.cleaned_data
+        return redirect('imovel_add_etapa2')
+
+class ImovelAddEtapa2View(PermissionRequiredMixin, FormView):
+    permission_required = 'imoveis.add_imovel'
+    template_name = 'imovel_form_2.html'
+    form_class = ImovelEtapa2Form
+
+    def form_valid(self, form):
+        dados_etapa1 = self.request.session.get('dados_etapa1')
+
+        if not dados_etapa1:
+            messages.error(self.request, 'Erro: dados da primeira etapa não encontrados.')
+            return redirect('imovel_add_etapa1')
+
+        imovel = Imovel(**dados_etapa1, **form.cleaned_data)
+        imovel.save()
+        messages.success(self.request, 'Imóvel cadastrado com sucesso.')
+        return redirect('imoveis')
 
 class ImovelUpdateView(PermissionRequiredMixin,SuccessMessageMixin, UpdateView):
     permission_required = 'imoveis.update_imovel'
     permission_denied_message = 'Editar imóvel'
     model = Imovel
     form_class = ImovelModelForm
-    template_name = 'imovel_form.html'
+    template_name = 'imovel_form_edit.html'
     success_url = reverse_lazy('imoveis')
     success_message = 'Imóvel atualizado com sucesso'
 

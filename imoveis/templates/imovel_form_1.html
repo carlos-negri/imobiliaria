@@ -1,4 +1,4 @@
-transacao_form.html{% extends 'principal.html' %}
+{% extends 'principal.html' %}
 {% load django_bootstrap5 %}
 {% block content %}
 
@@ -6,19 +6,19 @@ transacao_form.html{% extends 'principal.html' %}
     <div class="container">
         <div class="card shadow-lg mx-auto" style="max-width: 700px;">
             <div class="card-header bg-primary text-white text-center">
-                <h3 class="mb-0">💼 Nova Transação</h3>
+                <h3 class="mb-0">Cadastro de Imóvel – Etapa 1</h3>
             </div>
             <div class="card-body px-4 py-4">
-                <form method="POST" enctype="multipart/form-data" novalidate>
+                <form method="POST" novalidate>
                     {% csrf_token %}
                     {% bootstrap_form form layout='horizontal' %}
 
                     <div class="d-flex justify-content-between mt-4">
-                        <a href="{% url 'transacoes' %}" class="btn btn-secondary">
+                        <a href="{% url 'imoveis' %}" class="btn btn-secondary">
                             <i class="bi bi-arrow-left me-1"></i> Cancelar
                         </a>
-                        <button type="submit" class="btn btn-success">
-                            <i class="bi bi-cash-stack me-1"></i> Salvar
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-arrow-right me-1"></i> Próxima etapa
                         </button>
                     </div>
                 </form>
