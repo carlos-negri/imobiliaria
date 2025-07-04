@@ -21,7 +21,7 @@ class Visita(models.Model):
     imovel = models.ForeignKey(imoveis.models.Imovel, verbose_name='Imóvel', help_text='Código Único do Imóvel', on_delete=models.CASCADE, related_name='imovel', default='')
     datahora = models.DateTimeField(verbose_name='Data e Hora da visita')  # Data e hora da visita
     observacoes = models.TextField(blank=True)  # Campo opcional
-    situacao = models.CharField('Situação da visita', max_length=100, blank=True, choices=SITUACAO_CHOICES) # Situação
+    situacao = models.CharField('Situação da visita', max_length=100, blank=True, choices=SITUACAO_CHOICES, default='A') # Situação
 
     def __str__(self):
         return f"Visita no imóvel {self.imovel}. Cliente:  {self.cliente}. Corretor: {self.corretor} | Situação: {self.situacao} | Data: {self.datahora}"

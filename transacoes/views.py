@@ -37,24 +37,47 @@ class TransacaoAddEtapa1View(PermissionRequiredMixin, FormView):
     permission_required = 'transacoes.add_transacao'
     template_name = 'transacao_form_1.html'
     form_class = TransacaoEtapa1Form
+    model = Transacao
 
     def form_valid(self, form):
-        self.request.session['dados_etapa1'] = form.cleaned_data
+        self.request.session['tipo'] = form.cleaned_data['tipo']
         return redirect('transacao_add_etapa2')
 
 class TransacaoAddEtapa2View(PermissionRequiredMixin, FormView):
     permission_required = 'transacoes.add_transacao'
     template_name = 'transacao_form_2.html'
     form_class = TransacaoEtapa2Form
+    model = Transacao
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        tipo = self.request.session.get('tipo')
+        kwargs['tipo'] = tipo
+        return kwargs
 
     def form_valid(self, form):
-        dados_etapa1 = self.request.session.get('dados_etapa1')
+        tipo = self.request.session.get('tipo')
 
-        if not dados_etapa1:
+        if not tipo:
             messages.error(self.request, 'Erro: dados da primeira etapa não encontrados.')
             return redirect('transacao_add_etapa1')
 
-        transacao = Transacao(**dados_etapa1, **form.cleaned_data)
+        imovel = form.cleaned_data['imovel']
+
+        if tipo == 'V':
+            valor = imovel.valor_venda
+        elif tipo == 'A':
+            valor = imovel.valor_aluguel
+        else:
+            valor = None
+
+        if not valor:
+            messages.error(self.request, 'O imóvel selecionado não possui valor definido para essa transação.')
+            return redirect('transacao_add_etapa2')
+
+        transacao = form.save(commit=False)
+        transacao.tipo = tipo
+        transacao.valor = valor
         transacao.save()
         messages.success(self.request, 'Transação cadastrada com sucesso.')
         return redirect('transacoes')

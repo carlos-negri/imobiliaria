@@ -7,7 +7,14 @@ from datetime import datetime, time, timezone
 class VisitaModelForm(forms.ModelForm):
     class Meta:
         model = Visita
-        fields = '__all__'
+        fields = [
+            'cliente',
+            'corretor',
+            'imovel',
+            'datahora',
+            'observacoes',
+            'situacao'
+        ]
         widgets = {
             'datahora': forms.DateTimeInput(
                 attrs={
@@ -17,7 +24,7 @@ class VisitaModelForm(forms.ModelForm):
                 },
                 format='%Y-%m-%dT%H:%M'
             ),
-            'observacoes':forms.Textarea(attrs={'rows':3}),
+            'observacoes': forms.Textarea(attrs={'rows':3}),
         }
         error_messages = {
             'datahora': {'required': 'A data e hora da visita são obrigatórias', 'invalid':'Informe uma data e hora válidas'},
@@ -32,5 +39,37 @@ class VisitaModelForm(forms.ModelForm):
                 raise ValidationError("Não é possível agendar visitas para datas/horas passadas")
             return datahora
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['situacao'].widget = forms.HiddenInput()
+
+
+class VisitaUpdateModelForm(forms.ModelForm):
+    class Meta:
+        model = Visita
+        fields = '__all__'
+        widgets = {
+            'datahora': forms.DateTimeInput(
+                attrs={
+                    'type':'datetime-local',
+                    'class':'form-control',
+                    'min': datetime.now().strftime('%Y-%m-%dT%H:%M')
+                },
+                format='%Y-%m-%dT%H:%M'
+            ),
+            'observacoes': forms.Textarea(attrs={'rows':3}),
+        }
+        error_messages = {
+            'datahora': {'required': 'A data e hora da visita são obrigatórias', 'invalid':'Informe uma data e hora válidas'},
+            'imovel': {'required': 'O código do imóvel é um campo obrigatório'},
+            'corretor': {'required': 'O corretor é um campo obrigatório'},
+            'cliente': {'required': 'O cliente é um campo obrigatório'},
+        }
+
+        def clean_datahora(self):
+            datahora = self.cleaned_data.get('datahora')
+            if datahora and datahora < datetime.now():
+                raise ValidationError("Não é possível agendar visitas para datas/horas passadas")
+            return datahora
 
 

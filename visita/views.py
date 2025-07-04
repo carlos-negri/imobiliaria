@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
-from .forms import VisitaModelForm
+from .forms import VisitaModelForm, VisitaUpdateModelForm
 from .models import Visita
 from django.core.paginator import Paginator
 from django.contrib import messages
@@ -38,10 +38,12 @@ class VisitaAddView(PermissionRequiredMixin,SuccessMessageMixin,CreateView):
     success_url = reverse_lazy('visitas')
     success_message = 'Visita agendada com sucesso'
 
+
     def post (self, request, *args, **kwargs):
         form = self.get_form()
         if form.is_valid():
             visita = form.save(commit=True)
+
             if visita.situacao == 'A':
                 self.enviar_email(visita)
             return redirect('visitas')
@@ -72,7 +74,7 @@ class VisitaUpdateView(PermissionRequiredMixin,SuccessMessageMixin,UpdateView):
     permission_required = 'visita.update_visita'
     permission_denied_message = 'Editar visita'
     model = Visita
-    form_class = VisitaModelForm
+    form_class = VisitaUpdateModelForm
     template_name = 'visitas_form.html'
     success_url = reverse_lazy('visitas')
     success_message = 'Visita atualizada com sucesso'
