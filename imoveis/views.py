@@ -1,11 +1,13 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Subquery
 from django.shortcuts import get_object_or_404, render, redirect
 from django.template.context_processors import request
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from django.views.generic.base import TemplateResponseMixin, View, TemplateView
 
+from transacoes.models import Transacao
 from .forms import ImovelEtapa2Form, ImovelEtapa1Form, ImovelModelForm
 from .models import Imovel
 from django.core.paginator import Paginator
@@ -17,17 +19,6 @@ class ImovelView(PermissionRequiredMixin, ListView):
     model = Imovel
     template_name = 'imoveis.html'
 
-    def get_queryset(self):
-        buscar = self.request.GET.get('buscar')
-        qs = super(ImovelView, self).get_queryset()
-        if buscar:
-            qs = qs.filter(codigo_unico__icontains=buscar)
-        if qs.count()>0:
-            paginator = Paginator(qs, 10)
-            listagem =paginator.get_page(self.request.GET.get('page'))
-            return listagem
-        else:
-            return messages.info(self.request, 'Não existem imóveis cadastrados!')
 
 
 class ImovelAddEtapa1View(PermissionRequiredMixin, FormView):
@@ -78,3 +69,26 @@ def exibir_imovel(request, pk):
     return render(request, 'imovel_exibir.html', {'imovel': imovel})
 
 
+class ImovelDisponivelView(ListView):
+    model = Imovel
+    template_name = 'imoveis.html'
+    context_object_name = 'object_list'
+
+    def get_queryset(self):
+        buscar = self.request.GET.get('buscar', '')
+        tipo = self.request.GET.get('tipo', '')  # Captura o tipo do filtro (aluguel ou venda)
+
+        imoveis_com_transacao = Transacao.objects.values('imovel_id')
+        qs = Imovel.objects.exclude(id__in=Subquery(imoveis_com_transacao))
+
+        # Filtro por tipo (aluguel ou venda)
+        if tipo == 'aluguel':
+            qs = qs.filter(tipo_aluguel=True)
+        elif tipo == 'venda':
+            qs = qs.filter(tipo_venda=True)
+
+        # Filtro por busca (endereço)
+        if buscar:
+            qs = qs.filter(endereco__icontains=buscar)
+
+        return qs

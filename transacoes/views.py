@@ -7,6 +7,8 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from django.core.paginator import Paginator
 from django.contrib import messages
+from django.db.models import Subquery
+from imoveis.models import Imovel
 from .forms import TransacaoModelForm, TransacaoEtapa1Form, TransacaoEtapa2Form
 from .models import Transacao
 from django.db.models import Q
@@ -16,6 +18,7 @@ class TransacaoView(PermissionRequiredMixin,ListView):
     permission_denied_message = 'Visualizar transação'
     model = Transacao
     template_name = 'transacoes.html'
+
 
     def get_queryset(self):
         buscar = self.request.GET.get('buscar')

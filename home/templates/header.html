@@ -63,7 +63,7 @@
               {% if perms.imoveis.add_imovel %}
               <li><a class="dropdown-item" href="{% url 'imovel_add_etapa1' %}">Cadastrar Imóvel</a></li>
               {% endif %}
-              <li><a class="dropdown-item" href="{% url 'imoveis' %}">Consultar Imóveis</a></li>
+              <li><a class="dropdown-item" href="{% url 'imoveis_disponiveis' %}">Consultar Imóveis</a></li>
             </ul>
           </li>
           {% endif %}

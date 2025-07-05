@@ -5,8 +5,6 @@
 
 <section class="py-5">
     <div class="container">
-
-        <!-- Barra de busca -->
         <div class="card shadow-sm mb-4">
             <div class="card-body">
                 <form action="" method="GET">
@@ -28,12 +26,11 @@
             </div>
         </div>
 
-        <!-- Lista de proprietários -->
         {% if object_list %}
+
         <div class="card shadow-sm">
             <div class="card-body">
                 <h3 class="text-center mb-4">🏠 Proprietários Cadastrados</h3>
-
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead class="table-primary text-center">
@@ -41,17 +38,16 @@
                                 <th>Nome</th>
                                 <th>Fone</th>
                                 <th>Email</th>
-                                <th>Imóveis</th>
                                 <th style="width: 120px;">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for proprietario in object_list %}
-                            <tr>
+                            <tr class="text-center">
                                 <td>{{ proprietario.nome }}</td>
                                 <td>{{ proprietario.fone }}</td>
                                 <td>{{ proprietario.email }}</td>
-                                <td>{{ proprietario.imovel_set.count }} imóvel(is)</td>
+
                                 <td class="text-center">
                                     <a href="{% url 'proprietario_editar' proprietario.pk %}" class="text-primary me-2" title="Editar">
                                         <i class="bi bi-pencil-square fs-5"></i>
@@ -71,7 +67,7 @@
                     </table>
                 </div>
 
-                <!-- Paginação -->
+
                 <div class="d-flex justify-content-center mt-3">
                     {% bootstrap_pagination object_list url="/proprietarios?page=1" size="sm" %}
                 </div>
@@ -79,7 +75,7 @@
         </div>
 
         {% else %}
-        <!-- Se não houver proprietários -->
+
         <div class="text-center py-5">
             <h4 class="mb-4">🚫 Nenhum proprietário encontrado.</h4>
             <a href="{% url 'proprietario_adicionar' %}" class="btn btn-success btn-lg">

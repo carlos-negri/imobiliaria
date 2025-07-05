@@ -38,18 +38,26 @@
                 <th>Corretor</th>
                 <th>Cliente</th>
                 <th>Situação</th>
+                {% if perms.visita.update_visita %}
                 <th style="width: 120px;">Ações</th>
+                {% endif %}
               </tr>
             </thead>
             <tbody>
               {% for visita in object_list %}
-              <tr>
-                <td>{{ visita.datahora }}</td>
+              <tr class="text-center">
+                <td>
+                  <a href="#" data-bs-toggle="modal" data-bs-target="#modal{{ visita.id }}"
+                     class="text-decoration-none text-dark">
+                    {{ visita.datahora }} <i class="bi bi-box-arrow-up-right"></i>
+                  </a>
+                </td>
                 <td>{{ visita.imovel }}</td>
                 <td>{{ visita.corretor }}</td>
                 <td>{{ visita.cliente }}</td>
                 <td>{{ visita.get_situacao_display }}</td>
                 <td class="text-center">
+                  {% if perms.visita.update_visita %}
                   {% if visita.situacao != 'CO' %}
                   <a href="{% url 'visita_editar' visita.pk %}" class="text-primary me-2" title="Editar">
                     <i class="bi bi-pencil-square fs-5"></i>
@@ -68,12 +76,38 @@
                   <a href="{% url 'visita_exibir' visita.pk %}" class="text-success" title="Visualizar">
                     <i class="bi bi-check-circle fs-5"></i>
                   </a>
+                  {% endif %}
                 </td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
         </div>
+
+        {% for visita in object_list %}
+        <div class="modal fade" id="modal{{ visita.id }}" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Data da visita: {{ visita.datahora }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body text-center">
+                {% if visita.imovel.foto %}
+                <img src="{{ visita.imovel.foto.url }}" class="img-thumbnail mb-3" style="max-height: 150px;" />
+                {% endif %}
+                <p><strong>Cliente:</strong> {{ visita.cliente.nome }}</p>
+                <p><strong>Corretor responsável:</strong> {{ visita.corretor.nome }}</p>
+                <p><strong>Imóvel:</strong> {{ visita.imovel.endereco }}</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
         <div class="d-flex justify-content-center mt-3">
           {% bootstrap_pagination object_list url="/visita?page=1" size="sm" %}
         </div>
@@ -87,7 +121,6 @@
       </a>
     </div>
     {% endif %}
-
   </div>
 </section>
 {% endblock %}

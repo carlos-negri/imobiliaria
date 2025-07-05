@@ -36,19 +36,22 @@
                 <th>Nome</th>
                 <th>Fone</th>
                 <th>Email</th>
-                <th style="width: 120px;">Ações</th>
+                {% if perms.corretores.update_corretor %}
+                <th style="width: 120px">Ações</th>
+                {% endif %}
               </tr>
             </thead>
             <tbody>
               {% for corretor in object_list %}
               <tr>
-                <td>
-                  <a href="#" data-bs-toggle="modal" data-bs-target="#modal{{ corretor.id }}">
-                    {{ corretor.nome }}
+                <td class="text-center">
+                  <a class="text-decoration-none text-dark" href="#" data-bs-toggle="modal" data-bs-target="#modal{{ corretor.id }}">
+                    {{ corretor.nome }} <i class="bi bi-box-arrow-up-right"></i>
                   </a>
                 </td>
-                <td>{{ corretor.fone }}</td>
-                <td>{{ corretor.email }}</td>
+                <td class="text-center">{{ corretor.fone }}</td>
+                <td class="text-center">{{ corretor.email }}</td>
+                {% if perms.corretores.update_corretor %}
                 <td class="text-center">
                   <a href="{% url 'corretor_editar' corretor.pk %}" class="text-primary me-2" title="Editar">
                     <i class="bi bi-pencil-square fs-5"></i>
@@ -57,6 +60,7 @@
                     <i class="bi bi-trash3-fill fs-5"></i>
                   </a>
                 </td>
+                {% endif %}
               </tr>
 
               <!-- Modal de Detalhes -->
@@ -80,6 +84,8 @@
                   </div>
                 </div>
               </div>
+
+
               {% endfor %}
             </tbody>
           </table>
