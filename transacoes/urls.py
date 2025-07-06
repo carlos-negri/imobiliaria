@@ -1,6 +1,5 @@
 from django.urls import path
-from .views import TransacaoView, TransacaoUpdateView, TransacaoDeleteView, exibir_transacao, TransacaoAddView, \
-    TransacaoAddEtapa1View, TransacaoAddEtapa2View
+from .views import TransacaoView, TransacaoUpdateView, TransacaoDeleteView, exibir_transacao, TransacaoAddEtapa1View, TransacaoAddEtapa2View
 
 urlpatterns = [
     path('transacoes', TransacaoView.as_view(), name='transacoes'),

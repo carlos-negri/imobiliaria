@@ -1,14 +1,13 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.mail import send_mail
+from django.db import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.messages.views import SuccessMessageMixin
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
+from django.views.generic import ListView, UpdateView, DeleteView, FormView
 from django.core.paginator import Paginator
 from django.contrib import messages
-from django.db.models import Subquery
-from imoveis.models import Imovel
 from .forms import TransacaoModelForm, TransacaoEtapa1Form, TransacaoEtapa2Form
 from .models import Transacao
 from django.db.models import Q
@@ -59,71 +58,54 @@ class TransacaoAddEtapa2View(PermissionRequiredMixin, FormView):
         return kwargs
 
     def form_valid(self, form):
-        tipo = self.request.session.get('tipo')
+        try:
+            tipo = self.request.session.get('tipo')
 
-        if not tipo:
-            messages.error(self.request, 'Erro: dados da primeira etapa não encontrados.')
-            return redirect('transacao_add_etapa1')
+            if not tipo:
+                form.add_error(None, 'Erro: dados da primeira etapa não encontrados.')
+                return self.form_invalid(form)
 
-        imovel = form.cleaned_data['imovel']
+            transacao = form.save(commit=False)
+            transacao.tipo = tipo
+            transacao.save()
 
-        if tipo == 'V':
-            valor = imovel.valor_venda
-        elif tipo == 'A':
-            valor = imovel.valor_aluguel
-        else:
-            valor = None
+        except IntegrityError:
+            form.add_error('imovel', 'Este cliente já possui uma transação deste tipo para o imóvel.')
+            return self.form_invalid(form)
 
-        if not valor:
-            messages.error(self.request, 'O imóvel selecionado não possui valor definido para essa transação.')
-            return redirect('transacao_add_etapa2')
-
-        transacao = form.save(commit=False)
-        transacao.tipo = tipo
-        transacao.valor = valor
-        transacao.save()
+        self.enviar_email(transacao)
         messages.success(self.request, 'Transação cadastrada com sucesso.')
         return redirect('transacoes')
 
-class TransacaoAddView(PermissionRequiredMixin,SuccessMessageMixin,CreateView):
-    permission_required = 'transacoes.add_transacao'
-    permission_denied_message = 'Cadastrar transação'
-    model = Transacao
-    form_class = TransacaoModelForm
-    template_name = 'transacao_form.html'
-    success_url = reverse_lazy('transacoes')
-
-    def post (self, request, *args, **kwargs):
-        form = self.get_form()
-        if form.is_valid():
-            transacao = form.save(commit=True)
-            if transacao:
-                self.enviar_email(transacao)
-        return redirect('transacoes')
-
     def enviar_email(self, transacao):
+
+        tipo_legivel = transacao.get_tipo_display()
         email = []
         email.append(transacao.cliente.email)
 
         dados = {'cliente': transacao.cliente.nome,
                  'proprietario': transacao.proprietario.nome,
-                 'imovel':transacao.imovel,
+                 'imovel': transacao.imovel,
                  'endereco': transacao.imovel.endereco,
                  'corretor': transacao.corretor.nome,
-                 'tipo': transacao.get_tipo_display,
+                 'tipo_legivel': tipo_legivel,
                  'valor': transacao.valor,
                  }
 
         texto_email = render_to_string('emails/texto.txt', dados)
         html_email = render_to_string('emails/texto.html', dados)
         send_mail(subject='JATIMOV - Parabéns!',
-                  message = texto_email,
-                  from_email = 'chnnegri@gmail.com',
-                  recipient_list = email,
-                  html_message = html_email,
-                  fail_silently = False,
-        )
+                  message=texto_email,
+                  from_email='chnnegri@gmail.com',
+                  recipient_list=email,
+                  html_message=html_email,
+                  fail_silently=False,
+                  )
+
+
+        messages.success(self.request, 'Transação cadastrada com sucesso.')
         return redirect('transacoes')
+
 
 
 class TransacaoUpdateView(PermissionRequiredMixin,SuccessMessageMixin,UpdateView):

@@ -1,6 +1,5 @@
 {% extends 'principal.html' %}
 {% load django_bootstrap5 %}
-
 {% block content %}
 <section class="py-5">
   <div class="container">
@@ -9,6 +8,8 @@
         <h3 class="mb-0">Cadastro de Transação</h3>
       </div>
       <div class="card-body px-4 py-4">
+
+
         <form method="post" enctype="multipart/form-data" novalidate>
           {% csrf_token %}
 
@@ -21,7 +22,7 @@
               <i class="bi bi-arrow-left me-1"></i> Voltar
             </a>
             <button type="submit" class="btn btn-success">
-              <i class="bi bi-check2-circle me-1"></i> Finalizar cadastro
+              <i class="bi bi-check2-circle me-1"></i> Finalizar transação
             </button>
           </div>
         </form>

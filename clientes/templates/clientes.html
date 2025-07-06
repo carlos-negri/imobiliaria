@@ -6,7 +6,6 @@
 <section class="py-5">
     <div class="container">
 
-        <!-- Barra de busca -->
         <div class="card shadow-sm mb-4">
             <div class="card-body">
                 <form action="" method="GET">
@@ -28,11 +27,11 @@
             </div>
         </div>
 
-        <!-- Lista de clientes -->
+
         {% if object_list %}
         <div class="card shadow-sm">
             <div class="card-body">
-                <h3 class="text-center mb-4">👥 Clientes Cadastrados</h3>
+                <h3 class="text-center mb-4">Clientes Cadastrados</h3>
 
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
@@ -64,7 +63,6 @@
                     </table>
                 </div>
 
-                <!-- Paginação -->
                 <div class="d-flex justify-content-center mt-3">
                     {% bootstrap_pagination object_list url="/clientes?page=1" size="sm" %}
                 </div>
@@ -72,9 +70,9 @@
         </div>
 
         {% else %}
-        <!-- Se não houver clientes -->
+
         <div class="text-center py-5">
-            <h4 class="mb-4">🚫 Nenhum cliente encontrado.</h4>
+            <h4 class="mb-4">Nenhum cliente encontrado.</h4>
             <a href="{% url 'cliente_adicionar' %}" class="btn btn-success btn-lg">
                 <i class="bi bi-person-plus-fill me-2"></i> Cadastrar novo cliente
             </a>

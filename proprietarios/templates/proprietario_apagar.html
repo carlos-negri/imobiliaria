@@ -1,12 +1,11 @@
 {% extends 'principal.html' %}
 {% load django_bootstrap5 %}
 {% block content %}
- <div class="card shadow m-3 col-md-6 mx-auto">
+    <div class="card shadow m-3 col-md-6 mx-auto">
         <div class="card-body">
             <div class="row">
                 <h3 class="text-center">Dados do Proprietário</h3>
                 <p class="p-2 mt-2"><strong>Nome: </strong>{{ object.nome}}</p>
-<!--                vem só um objeto e o atributo-->
                 <p class="p-2 mt-2"><strong>Fone: </strong>{{ object.fone }}</p>
                 <p class="p-2 mt-2">Confirma a exclusão do proprietario: <strong>{{ object }}</strong>?</p>
                 <form method="POST" enctype="multipart/form-data">

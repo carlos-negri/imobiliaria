@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import Subquery
+from django.db.models import Subquery, Q
 from django.shortcuts import get_object_or_404, render, redirect
 from django.template.context_processors import request
 from django.urls import reverse_lazy
@@ -89,6 +89,9 @@ class ImovelDisponivelView(ListView):
 
         # Filtro por busca (endereço)
         if buscar:
-            qs = qs.filter(endereco__icontains=buscar)
+            qs = qs.filter(
+                Q(imovel__endereco__icontains=buscar),
+                Q(imovel__endereco__icontains=buscar)
+            )
 
         return qs

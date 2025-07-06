@@ -2,107 +2,106 @@
 {% load django_bootstrap5 %}
 {% load static %}
 {% block content %}
-<section class="py-5">
-  <div class="container">
+  <section class="py-5">
+    <div class="container">
 
-    <div class="card shadow-sm mb-4">
-      <div class="card-body">
-        <form action="" method="GET">
-          <div class="row align-items-center g-3">
-            <div class="col-md-3 text-md-end">
-              <label class="col-form-label fw-bold">Nome do corretor:</label>
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <form action="" method="GET">
+            <div class="row align-items-center g-3">
+              <div class="col-md-3 text-md-end">
+                <label class="col-form-label fw-bold">Nome do corretor:</label>
+              </div>
+              <div class="col-md-6">
+                <input class="form-control" type="text" name="buscar" value="{{ request.GET.buscar }}" placeholder="Digite o nome do corretor">
+              </div>
+              <div class="col-md-3 text-md-start">
+                <button type="submit" class="btn btn-primary w-100">
+                  <i class="bi bi-search me-1"></i> Buscar
+                </button>
+              </div>
             </div>
-            <div class="col-md-6">
-              <input class="form-control" type="text" name="buscar" value="{{ request.GET.buscar }}" placeholder="Digite o nome do corretor">
-            </div>
-            <div class="col-md-3 text-md-start">
-              <button type="submit" class="btn btn-primary w-100">
-                <i class="bi bi-search me-1"></i> Buscar
-              </button>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
 
-    {% if object_list %}
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <h3 class="text-center mb-4">🏢 Corretores Cadastrados</h3>
-        <div class="table-responsive">
-          <table class="table table-hover align-middle">
-            <thead class="table-primary text-center">
-              <tr>
-                <th>Nome</th>
-                <th>Fone</th>
-                <th>Email</th>
-                {% if perms.corretores.update_corretor %}
-                <th style="width: 120px">Ações</th>
-                {% endif %}
-              </tr>
-            </thead>
-            <tbody>
-              {% for corretor in object_list %}
-              <tr>
-                <td class="text-center">
-                  <a class="text-decoration-none text-dark" href="#" data-bs-toggle="modal" data-bs-target="#modal{{ corretor.id }}">
-                    {{ corretor.nome }} <i class="bi bi-box-arrow-up-right"></i>
-                  </a>
-                </td>
-                <td class="text-center">{{ corretor.fone }}</td>
-                <td class="text-center">{{ corretor.email }}</td>
-                {% if perms.corretores.update_corretor %}
-                <td class="text-center">
-                  <a href="{% url 'corretor_editar' corretor.pk %}" class="text-primary me-2" title="Editar">
-                    <i class="bi bi-pencil-square fs-5"></i>
-                  </a>
-                  <a href="{% url 'corretor_apagar' corretor.pk %}" class="text-danger" title="Excluir">
-                    <i class="bi bi-trash3-fill fs-5"></i>
-                  </a>
-                </td>
-                {% endif %}
-              </tr>
+      {% if object_list %}
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h3 class="text-center mb-4">Corretores Cadastrados</h3>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-primary text-center">
+                <tr>
+                  <th>Nome</th>
+                  <th>Fone</th>
+                  <th>Email</th>
+                  {% if perms.corretores.update_corretor %}
+                  <th style="width: 120px">Ações</th>
+                  {% endif %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for corretor in object_list %}
+                <tr>
+                  <td class="text-center">
+                    <a class="text-decoration-none text-dark" href="#" data-bs-toggle="modal" data-bs-target="#modal{{ corretor.id }}">
+                      {{ corretor.nome }} <i class="bi bi-box-arrow-up-right"></i>
+                    </a>
+                  </td>
+                  <td class="text-center">{{ corretor.fone }}</td>
+                  <td class="text-center">{{ corretor.email }}</td>
+                  {% if perms.corretores.update_corretor %}
+                  <td class="text-center">
+                    <a href="{% url 'corretor_editar' corretor.pk %}" class="text-primary me-2" title="Editar">
+                      <i class="bi bi-pencil-square fs-5"></i>
+                    </a>
+                    <a href="{% url 'corretor_apagar' corretor.pk %}" class="text-danger" title="Excluir">
+                      <i class="bi bi-trash3-fill fs-5"></i>
+                    </a>
+                  </td>
+                  {% endif %}
+                </tr>
 
-              <!-- Modal de Detalhes -->
-              <div class="modal fade" id="modal{{ corretor.id }}" tabindex="-1">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Corretor: {{ corretor.nome }}</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                      {% if corretor.foto.url %}
-                      <img src="{{ corretor.foto.url }}" class="img-thumbnail mb-3" style="max-height: 150px;" />
-                      {% endif %}
-                      <p><strong>Fone:</strong> {{ corretor.fone }}</p>
-                      <p><strong>Email:</strong> {{ corretor.email }}</p>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <div class="modal fade" id="modal{{ corretor.id }}" tabindex="-1">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Corretor: {{ corretor.nome }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body text-center">
+                        {% if corretor.foto.url %}
+                        <img src="{{ corretor.foto.url }}" class="img-thumbnail mb-3" style="max-height: 150px;" />
+                        {% endif %}
+                        <p><strong>Fone:</strong> {{ corretor.fone }}</p>
+                        <p><strong>Email:</strong> {{ corretor.email }}</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
 
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-        <div class="d-flex justify-content-center mt-3">
-          {% bootstrap_pagination object_list url="/corretores?page=1" size="sm" %}
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="d-flex justify-content-center mt-3">
+            {% bootstrap_pagination object_list url="/corretores?page=1" size="sm" %}
+          </div>
         </div>
       </div>
+      {% else %}
+      <div class="text-center py-5">
+        <h5>Nenhum corretor cadastrado!</h5>
+        <a href="{% url 'corretor_adicionar' %}" class="btn btn-success btn-lg mt-3">
+          <i class="bi bi-person-plus-fill me-2"></i> Cadastrar corretor
+        </a>
+      </div>
+      {% endif %}
     </div>
-    {% else %}
-    <div class="text-center py-5">
-      <h5>🚫 Nenhum corretor cadastrado!</h5>
-      <a href="{% url 'corretor_adicionar' %}" class="btn btn-success btn-lg mt-3">
-        <i class="bi bi-person-plus-fill me-2"></i> Cadastrar corretor
-      </a>
-    </div>
-    {% endif %}
-  </div>
-</section>
+  </section>
 {% endblock %}

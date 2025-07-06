@@ -2,125 +2,170 @@
 {% load django_bootstrap5 %}
 {% load static %}
 {% block content %}
-<section class="py-5">
-  <div class="container">
 
-    <div class="card shadow-sm mb-4">
-      <div class="card-body">
-        <form action="" method="GET">
-          <div class="row align-items-center g-3">
-            <div class="col-md-3 text-md-end">
-              <label class="col-form-label fw-bold">Visitas:</label>
-            </div>
-            <div class="col-md-6">
-              <input class="form-control" type="text" name="buscar" value="{{ request.GET.buscar }}" placeholder="Pesquisar visitas">
-            </div>
-            <div class="col-md-3 text-md-start">
-              <button type="submit" class="btn btn-primary w-100">
-                <i class="bi bi-search me-1"></i> Buscar
-              </button>
-            </div>
+  <section class="py-5">
+    <div class="container">
+      <div class="card shadow-sm mb-4 p-4 rounded">
+      <form action="" method="GET">
+
+
+        <div class="mb-3">
+          <label for="buscar" class="form-label fw-semibold">Pesquisar visitas</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0">
+              <i class="bi bi-search"></i>
+            </span>
+            <input id="buscar" name="buscar" type="text" class="form-control border-start-0"
+                   value="{{ request.GET.buscar }}" placeholder="Nome do cliente, corretor ou imóvel...">
           </div>
-        </form>
-      </div>
-    </div>
+        </div>
 
-    {% if object_list %}
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <h3 class="text-center mb-4">📅 Visitas Agendadas</h3>
-        <div class="table-responsive">
-          <table class="table table-hover align-middle">
-            <thead class="table-primary text-center">
-              <tr>
-                <th>Data e hora</th>
-                <th>Código do Imóvel</th>
-                <th>Corretor</th>
-                <th>Cliente</th>
-                <th>Situação</th>
-                {% if perms.visita.update_visita %}
-                <th style="width: 120px;">Ações</th>
-                {% endif %}
-              </tr>
-            </thead>
-            <tbody>
-              {% for visita in object_list %}
-              <tr class="text-center">
-                <td>
-                  <a href="#" data-bs-toggle="modal" data-bs-target="#modal{{ visita.id }}"
-                     class="text-decoration-none text-dark">
-                    {{ visita.datahora }} <i class="bi bi-box-arrow-up-right"></i>
-                  </a>
-                </td>
-                <td>{{ visita.imovel }}</td>
-                <td>{{ visita.corretor }}</td>
-                <td>{{ visita.cliente }}</td>
-                <td>{{ visita.get_situacao_display }}</td>
-                <td class="text-center">
-                  {% if perms.visita.update_visita %}
-                  {% if visita.situacao != 'CO' %}
-                  <a href="{% url 'visita_editar' visita.pk %}" class="text-primary me-2" title="Editar">
-                    <i class="bi bi-pencil-square fs-5"></i>
-                  </a>
-                  <a href="{% url 'visita_apagar' visita.pk %}" class="text-danger me-2" title="Excluir">
-                    <i class="bi bi-trash3-fill fs-5"></i>
-                  </a>
-                  {% else %}
-                  <span class="text-muted me-3" title="Não pode editar/excluir">
-                    <i class="bi bi-pencil-square"></i>
-                  </span>
-                  <span class="text-muted me-3" title="Não pode editar/excluir">
-                    <i class="bi bi-trash3-fill"></i>
-                  </span>
-                  {% endif %}
-                  <a href="{% url 'visita_exibir' visita.pk %}" class="text-success" title="Visualizar">
-                    <i class="bi bi-check-circle fs-5"></i>
-                  </a>
-                  {% endif %}
-                </td>
-              </tr>
+
+        <div class="row g-3 align-items-end">
+
+          <div class="col-md-4">
+            <label for="mes" class="form-label fw-semibold">Mês</label>
+            <select name="mes" id="mes" class="form-select">
+              <option value="">Todos os meses</option>
+              {% for num, mes in meses %}
+                <option value="{{ mes|lower }}" {% if request.GET.mes == mes|lower %}selected{% endif %}>{{ mes }}</option>
               {% endfor %}
-            </tbody>
-          </table>
-        </div>
+            </select>
+          </div>
 
-        {% for visita in object_list %}
-        <div class="modal fade" id="modal{{ visita.id }}" tabindex="-1">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Data da visita: {{ visita.datahora }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-              <div class="modal-body text-center">
-                {% if visita.imovel.foto %}
-                <img src="{{ visita.imovel.foto.url }}" class="img-thumbnail mb-3" style="max-height: 150px;" />
-                {% endif %}
-                <p><strong>Cliente:</strong> {{ visita.cliente.nome }}</p>
-                <p><strong>Corretor responsável:</strong> {{ visita.corretor.nome }}</p>
-                <p><strong>Imóvel:</strong> {{ visita.imovel.endereco }}</p>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <div class="col-md-4">
+            <label for="dia_semana" class="form-label fw-semibold">Dia da Semana</label>
+            <select name="dia_semana" id="dia_semana" class="form-select">
+              <option value="">Todos os dias</option>
+              {% for dia in dias_semana %}
+                <option value="{{ dia.value }}" {% if request.GET.dia_semana == dia.value %}selected{% endif %}>{{ dia.display }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label for="situacao" class="form-label fw-semibold">Situação</label>
+            <select name="situacao" id="situacao" class="form-select">
+              <option value="">Todas</option>
+              {% for codigo, descricao in situacoes %}
+                <option value="{{ codigo }}" {% if request.GET.situacao == codigo %}selected{% endif %}>{{ descricao }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+
+          <div class="col-md-6 d-grid mt-2">
+            <button type="submit" class="btn btn-primary fw-semibold">
+              <i class="bi bi-funnel me-1"></i> Aplicar Filtros
+            </button>
+          </div>
+
+          <div class="col-md-6 d-grid mt-2">
+            <a href="{% url 'visitas' %}" class="btn btn-outline-secondary fw-semibold">
+              <i class="bi bi-x-circle me-1"></i> Limpar Filtros
+            </a>
+          </div>
+
+        </div>
+      </form>
+  </div>
+
+      {% if object_list %}
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h3 class="text-center mb-4">Visitas Agendadas</h3>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-primary text-center">
+                <tr>
+                  <th>Data e hora</th>
+                  <th>Código do Imóvel</th>
+                  <th>Corretor</th>
+                  <th>Cliente</th>
+                  <th>Situação</th>
+                  {% if perms.visita.update_visita %}
+                  <th style="width: 120px;">Ações</th>
+                  {% endif %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for visita in object_list %}
+                <tr class="text-center">
+                  <td>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modal{{ visita.id }}"
+                       class="text-decoration-none text-dark">
+                      {{ visita.datahora }} <i class="bi bi-box-arrow-up-right"></i>
+                    </a>
+                  </td>
+                  <td>{{ visita.imovel }}</td>
+                  <td>{{ visita.corretor }}</td>
+                  <td>{{ visita.cliente }}</td>
+                  <td>{{ visita.get_situacao_display }}</td>
+                  <td class="text-center">
+                    {% if perms.visita.update_visita %}
+                    {% if visita.situacao != 'CO' %}
+                    <a href="{% url 'visita_editar' visita.pk %}" class="text-primary me-2" title="Editar">
+                      <i class="bi bi-pencil-square fs-5"></i>
+                    </a>
+                    <a href="{% url 'visita_apagar' visita.pk %}" class="text-danger me-2" title="Excluir">
+                      <i class="bi bi-trash3-fill fs-5"></i>
+                    </a>
+                    {% else %}
+                    <span class="text-muted me-3" title="Não pode editar/excluir">
+                      <i class="bi bi-pencil-square"></i>
+                    </span>
+                    <span class="text-muted me-3" title="Não pode editar/excluir">
+                      <i class="bi bi-trash3-fill"></i>
+                    </span>
+                    {% endif %}
+                    <a href="{% url 'visita_exibir' visita.pk %}" class="text-success" title="Visualizar">
+                      <i class="bi bi-check-circle fs-5"></i>
+                    </a>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          {% for visita in object_list %}
+          <div class="modal fade" id="modal{{ visita.id }}" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Data da visita: {{ visita.datahora }}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                  {% if visita.imovel.foto %}
+                  <img src="{{ visita.imovel.foto.url }}" class="img-thumbnail mb-3" style="max-height: 150px;" />
+                  {% endif %}
+                  <p><strong>Cliente:</strong> {{ visita.cliente.nome }}</p>
+                  <p><strong>Corretor responsável:</strong> {{ visita.corretor.nome }}</p>
+                  <p><strong>Imóvel:</strong> {{ visita.imovel.endereco }}</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        {% endfor %}
+          {% endfor %}
 
-        <div class="d-flex justify-content-center mt-3">
-          {% bootstrap_pagination object_list url="/visita?page=1" size="sm" %}
+          <div class="d-flex justify-content-center mt-3">
+            {% bootstrap_pagination object_list url="/visita?page=1" size="sm" %}
+          </div>
         </div>
       </div>
+      {% else %}
+      <div class="text-center py-5">
+        <h5>Não existem visitas agendadas!</h5>
+        <a href="{% url 'visita_adicionar' %}" class="btn btn-success btn-lg mt-3">
+          <i class="bi bi-calendar-plus me-2"></i> Agendar visita
+        </a>
+      </div>
+      {% endif %}
     </div>
-    {% else %}
-    <div class="text-center py-5">
-      <h5>🚫 Não existem visitas agendadas!</h5>
-      <a href="{% url 'visita_adicionar' %}" class="btn btn-success btn-lg mt-3">
-        <i class="bi bi-calendar-plus me-2"></i> Agendar visita
-      </a>
-    </div>
-    {% endif %}
-  </div>
-</section>
-{% endblock %}
+  </section>
+  {% endblock %}
