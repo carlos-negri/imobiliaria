@@ -1,9 +1,9 @@
 from django.db import models
 
 class Cliente(models.Model):
-    nome = models.CharField('Nome',max_length=100, help_text='Nome completo do cliente')
-    fone = models.CharField('Telefone', max_length=15, help_text='Celular completo do cliente')
-    email = models.EmailField('Email', help_text='Email completo do cliente')
+    nome = models.CharField('Nome',max_length=100, help_text='Nome completo do cliente', unique=True)
+    fone = models.CharField('Telefone', max_length=15, help_text='Celular completo do cliente', unique=True)
+    email = models.EmailField('Email', help_text='Email completo do cliente', unique=True)
 
     class Meta:
         verbose_name = 'Cliente'

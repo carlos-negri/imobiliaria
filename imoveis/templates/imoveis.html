@@ -33,7 +33,6 @@
         {% for imovel in object_list %}
           <div class="col-md-6 col-lg-4 col-xl-3">
             <div class="card h-100 shadow rounded-3 border-0">
-
               {% if imovel.foto %}
                 <img src="{{ imovel.foto.url }}" class="card-img-top rounded-top" style="height: 200px; object-fit: cover;" alt="Foto do imóvel">
               {% else %}
@@ -55,12 +54,22 @@
                   <li><i class="bi bi-key me-1"></i> Aluguel: R$ {{ imovel.valor_aluguel|floatformat:"2" }}</li>
                   {% endif %}
                 </ul>
-
                 {% if perms.imoveis.view_imovel %}
-                  <a href="{% url 'imovel_exibir' imovel.pk %}" class="btn btn-outline-primary mt-auto w-100">
+                  <a href="{% url 'imovel_exibir' imovel.pk %}" class="btn btn-outline-primary w-100">
                     Ver detalhes
                   </a>
                 {% endif %}
+                {% if perms.imoveis.delete_imovel %}
+                  <a href="{% url 'imovel_apagar' imovel.pk %}" class="btn btn-outline-danger w-40" title="Excluir">
+                    <i class="bi bi-trash3-fill fs-5"></i>
+                  </a>
+                {% endif %}
+                {% if perms.imoveis.update_imovel %}
+                  <a href="{% url 'imovel_editar' imovel.pk %}" class="btn btn-outline-secondary w-40" title="Excluir">
+                    <i class="bi bi-pencil-fill fs-5"></i>
+                  </a>
+                {% endif %}
+
               </div>
             </div>
           </div>

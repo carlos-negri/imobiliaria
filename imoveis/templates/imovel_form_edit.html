@@ -6,7 +6,7 @@
     <div class="container">
       <div class="card shadow-lg mx-auto" style="max-width: 700px;">
         <div class="card-header bg-primary text-white text-center">
-          <h3 class="mb-0">Cadastro de Imóvel – Etapa 2</h3>
+          <h3 class="mb-0">Editar imóvel</h3>
         </div>
         <div class="card-body px-4 py-4">
           <form method="post" enctype="multipart/form-data" novalidate>
@@ -24,7 +24,7 @@
             {% bootstrap_form form exclude='valor_venda,valor_aluguel' layout='horizontal' %}
 
             <div class="d-flex justify-content-between mt-4">
-              <a href="{% url 'imovel_add_etapa1' %}" class="btn btn-secondary">
+              <a href="{% url 'imoveis' %}" class="btn btn-secondary">
                 <i class="bi bi-arrow-left me-1"></i> Voltar
               </a>
               <button type="submit" class="btn btn-success">

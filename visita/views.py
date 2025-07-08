@@ -72,7 +72,21 @@ class VisitaView(PermissionRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['meses'] = [(num, mes) for num, mes in enumerate(calendar.month_name) if mes]
+        meses_pt = [
+            (1, 'Janeiro'),
+            (2, 'Fevereiro'),
+            (3, 'Março'),
+            (4, 'Abril'),
+            (5, 'Maio'),
+            (6, 'Junho'),
+            (7, 'Julho'),
+            (8, 'Agosto'),
+            (9, 'Setembro'),
+            (10, 'Outubro'),
+            (11, 'Novembro'),
+            (12, 'Dezembro'),
+        ]
+        context['meses'] = meses_pt
 
         Dia = namedtuple('Dia', ['value', 'display'])
         context['dias_semana'] = [
