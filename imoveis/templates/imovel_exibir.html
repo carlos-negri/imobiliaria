@@ -40,7 +40,7 @@
                                   <li class="list-group-item fw-bold text-decoration-none">Venda: R$ {{ imovel.valor_venda|floatformat:"2" }}</li>
                                 {% endif %}
                                 {% if imovel.valor_aluguel %}
-                                  <li class="list-group-item fw-bold text-decoration-none"><i class="bi bi-key me-1"></i> Aluguel: R$ {{ imovel.valor_aluguel|floatformat:"2" }}</li>
+                                  <li class="list-group-item fw-bold text-decoration-none">Aluguel: R$ {{ imovel.valor_aluguel|floatformat:"2" }}</li>
                                 {% endif %}
                                 <li class="list-group-item"><strong>IPTU:</strong> {{ imovel.valor_iptu }}</li>
                                 <li class="list-group-item"><strong>Quartos:</strong> {{ imovel.quartos }}</li>

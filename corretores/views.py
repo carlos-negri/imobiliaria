@@ -35,6 +35,12 @@ class CorretorAddView(PermissionRequiredMixin,SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('corretores')
     success_message = 'Corretor cadastrado com sucesso'
 
+    def form_valid(self, form):
+        if not self.request.FILES.get('foto'):
+            form.add_error('foto', 'O corretor precisa ter uma foto')
+            return self.form_invalid(form)
+        return super().form_valid(form)
+
 
 class CorretorUpdateView(PermissionRequiredMixin,SuccessMessageMixin, UpdateView):
     permission_required = 'corretores.update_corretor'

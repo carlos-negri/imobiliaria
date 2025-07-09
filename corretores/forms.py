@@ -7,8 +7,8 @@ class CorretorModelForm(forms.ModelForm):
         fields = '__all__'
 
         error_messages = {
-            'nome': {'required': 'O nome do cliente é um campo obrigatório'},
-            'fone': {'required': 'O telefone do cliente é um campo obrigatório', 'unique':'Telefone já cadastrado'},
-            'email': {'required': 'O email do cliente é um campo obrigatório', 'unique':'E-mail já cadastrado'},
+            'nome': {'required': 'O nome do corretor é um campo obrigatório'},
+            'fone': {'required': 'O telefone do corretor é um campo obrigatório', 'unique':'Telefone já cadastrado'},
+            'email': {'required': 'O email do corretor é um campo obrigatório', 'unique':'E-mail já cadastrado'},
             'foto': {'required': 'O corretor precisa ter uma foto'}
         }
