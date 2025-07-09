@@ -3,10 +3,12 @@ from django.db import models
 from stdimage import StdImageField
 
 
-class Corretor(models.Model):
-    nome = models.CharField('Nome',max_length=100, help_text='Nome completo do corretor')
-    fone = models.CharField('Telefone', max_length=15, help_text='Celular completo do corretor', unique=True)
-    email = models.EmailField('Email', help_text='Email completo do corretor', unique=True)
+class Pessoa(models.Model):
+    nome = models.CharField('Nome',max_length=100, help_text='Nome completo')
+    fone = models.CharField('Telefone', max_length=15, help_text='Celular completo', unique=True)
+    email = models.EmailField('Email', help_text='Email completo', unique=True)
+
+class Corretor(Pessoa):
     foto = StdImageField('Foto', upload_to='corretores', delete_orphans=True, null=True, blank=True)
 
     class Meta:

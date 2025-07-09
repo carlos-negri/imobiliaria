@@ -69,18 +69,6 @@ class TransacaoAddEtapa2View(PermissionRequiredMixin, FormView):
 
             transacao = form.save(commit=False)
             transacao.tipo = tipo
-            valor=0
-            if tipo == 'V':
-                valor += transacao.imovel.valor_venda
-            elif tipo == 'A':
-                valor += transacao.imovel.valor_aluguel
-            else:
-                valor = 0
-
-            transacao.valor = valor
-            transacao.comissao = valor * Decimal('0.05')
-
-
             transacao.save()
 
         except IntegrityError:

@@ -29,17 +29,19 @@ class Transacao(models.Model):
         visitas = Visita.objects.filter(cliente=self.cliente, imovel=self.imovel)
 
         for visita in visitas:
-            if visita.datahora.date() == timezone.now().date() and visita.situacao=='CO':
+            if visita.datahora.date() == datetime.today().date():
+                self.valor = (self.valor * Decimal(0.9))
+            if visita.datahora.date() == timezone.now().date():
                 if self.tipo == 'V':
                     self.valor = self.imovel.valor_venda * Decimal('0.9')
                 elif self.tipo == 'A':
                     self.valor = self.imovel.valor_aluguel * Decimal('0.9')
                 break
-        else:
-            if self.tipo == 'V':
-                self.valor = self.imovel.valor_venda
-            elif self.tipo == 'A':
-                self.valor = self.imovel.valor_aluguel
+            else:
+                if self.tipo == 'V':
+                    self.valor = self.imovel.valor_venda
+                elif self.tipo == 'A':
+                    self.valor = self.imovel.valor_aluguel
 
         super().save(*args, **kwargs)
 

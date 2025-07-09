@@ -12,8 +12,8 @@ class ProprietarioModelForm(forms.ModelForm):
 
         error_messages = {
             'nome': {'required': 'O nome do proprietário é um campo obrigatório'},
-            'fone': {'required': 'O telefone do proprietário é um campo obrigatório', 'unique':'Já existe um proprietário com esse número de telefone!'},
-            'email': {'required': 'O email do proprietário é um campo obrigatório', 'unique': 'Já existe um proprietário com esse e-mail!'},
+            'fone': {'required': 'O telefone do proprietário é um campo obrigatório', 'unique':'Telefone já cadastrado!'},
+            'email': {'required': 'O email do proprietário é um campo obrigatório', 'unique': 'E-mail já cadastrado!'},
         }
 
 ImoveisProprietarioInLine = inlineformset_factory(Proprietario, ImoveisProprietario, fk_name='proprietario',

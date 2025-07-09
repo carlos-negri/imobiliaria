@@ -56,9 +56,14 @@ class ImovelAddEtapa2View(PermissionRequiredMixin, FormView):
             return self.form_invalid(form)
 
 
+        proprietarios = form.cleaned_data.pop('proprietarios')
+
+
         imovel = Imovel(**dados_etapa1, **form.cleaned_data)
         imovel.save()
-        messages.success(self.request, 'Imóvel cadastrado com sucesso.')
+
+
+        imovel.proprietarios.set(proprietarios)
         return redirect('imoveis')
 
 class ImovelUpdateView(PermissionRequiredMixin,SuccessMessageMixin, UpdateView):

@@ -104,10 +104,10 @@
                   <td class="text-center">
                     {% if perms.visita.update_visita %}
                     {% if visita.situacao != 'CO' %}
-                    <a href="{% url 'visita_editar' visita.pk %}" class="text-primary me-2" title="Editar">
+                    <a href="{% url 'visita_editar' visita.pk %}" class="text-primary me-2 text-decoration-none" title="Editar">
                       <i class="bi bi-pencil-square fs-5"></i>
                     </a>
-                    <a href="{% url 'visita_apagar' visita.pk %}" class="text-danger me-2" title="Excluir">
+                    <a href="{% url 'visita_apagar' visita.pk %}" class="text-danger me-2 text-decoration-none" title="Excluir">
                       <i class="bi bi-trash3-fill fs-5"></i>
                     </a>
                     {% else %}

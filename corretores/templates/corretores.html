@@ -71,9 +71,11 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                       </div>
                       <div class="modal-body text-center">
-                        {% if corretor.foto.url %}
-                        <img src="{{ corretor.foto.url }}" class="img-thumbnail mb-3" style="max-height: 150px;" />
-                        {% endif %}
+                        {% if corretor.foto %}
+                              <img src="{{ corretor.foto.url }}" alt="{{ corretor.nome }}">
+                          {% else %}
+                              <p>Sem foto</p>
+                          {% endif %}
                         <p><strong>Fone:</strong> {{ corretor.fone }}</p>
                         <p><strong>Email:</strong> {{ corretor.email }}</p>
                       </div>

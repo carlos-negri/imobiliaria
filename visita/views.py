@@ -167,10 +167,9 @@ class VisitaExibir(DetailView):
 
     def get_object(self, queryset=None):
         visita = Visita.objects.get(pk=self.kwargs.get('pk'))
-        if visita.situacao!='CO':
-            visita.situacao = 'CO'
-            visita.save()
-            self.enviar_email(visita) 
+        visita.situacao = 'CO'
+        visita.save()
+        self.enviar_email(visita)
         return visita
 
     def enviar_email(self, visita):
