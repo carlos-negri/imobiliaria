@@ -35,12 +35,26 @@ class ImovelAddEtapa2View(PermissionRequiredMixin, FormView):
     template_name = 'imovel_form_2.html'
     form_class = ImovelEtapa2Form
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['dados_etapa1'] = self.request.session.get('dados_etapa1', {})
+        return kwargs
+
     def form_valid(self, form):
         dados_etapa1 = self.request.session.get('dados_etapa1')
 
         if not dados_etapa1:
             messages.error(self.request, 'Erro: dados da primeira etapa não encontrados.')
             return redirect('imovel_add_etapa1')
+
+        tipo_aluguel = dados_etapa1.get('tipo_aluguel')
+        status_imovel = form.cleaned_data.get('status_imovel')
+
+        if tipo_aluguel and status_imovel in ['PLANTA', 'CONSTR']:
+            form.add_error('status_imovel',
+                           'Imóveis na planta ou em construção não podem ser cadastrados para aluguel.')
+            return self.form_invalid(form)
+
 
         imovel = Imovel(**dados_etapa1, **form.cleaned_data)
         imovel.save()

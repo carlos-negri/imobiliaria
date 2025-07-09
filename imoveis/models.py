@@ -1,7 +1,7 @@
 from django.db import models
 from django.forms import ImageField
 from stdimage import StdImageField
-import proprietarios.models
+from proprietarios.models import Proprietario
 
 class Imovel (models.Model):
 # Tipos de imóvel (usando caixas de seleção)
@@ -42,6 +42,7 @@ class Imovel (models.Model):
     vagas_garagem = models.PositiveIntegerField()
     tipo_imovel = models.CharField(max_length=10, choices=TIPO_IMOVEL_CHOICES)
     status_imovel = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    proprietarios = models.ManyToManyField(Proprietario, related_name='imoveis', verbose_name='Proprietários')
 
     # booleanos pras checkboxes
     tem_condominio = models.BooleanField(default=False)

@@ -12,16 +12,7 @@
           <form method="post" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
 
-
-            {% if request.session.dados_etapa1.tipo_venda %}
-              {% bootstrap_field form.valor_venda layout='horizontal' %}
-            {% endif %}
-
-            {% if request.session.dados_etapa1.tipo_aluguel %}
-              {% bootstrap_field form.valor_aluguel layout='horizontal' %}
-            {% endif %}
-
-            {% bootstrap_form form exclude='valor_venda,valor_aluguel' layout='horizontal' %}
+            {% bootstrap_form form exclude='valor_venda,valor_aluguel, codigo_unico' layout='horizontal' %}
 
             <div class="d-flex justify-content-between mt-4">
               <a href="{% url 'imoveis' %}" class="btn btn-secondary">

@@ -50,7 +50,7 @@
                                     <td>{{ cliente.fone }}</td>
                                     <td>{{ cliente.email }}</td>
                                     <td class="text-center">
-                                        <a href="{% url 'cliente_editar' cliente.pk %}" class="text-primary me-2" title="Editar">
+                                        <a href="{% url 'cliente_editar' cliente.pk %}" class="text-primary me-2 text-decoration-none" title="Editar">
                                             <i class="bi bi-pencil-square fs-5"></i>
                                         </a>
                                         <a href="{% url 'cliente_apagar' cliente.pk %}" class="text-danger" title="Excluir">

@@ -20,6 +20,15 @@
                 <div class="col-md-6 d-flex flex-column">
                     <div class="card-body">
                         <h3 class="card-title mb-1">
+                            {% if imovel.tipo_aluguel %}
+                                Aluguel -
+                            {% endif %}
+                            {% if imovel.tipo_venda %}
+                                Venda -
+                            {% endif %}
+                            {% if imovel.tipo_aluguel and imovel.tipo_venda %}
+                                Aluguel e Venda -
+                            {% endif %}
                             {{ imovel.get_tipo_imovel_display }} - {{ imovel.endereco }}
                         </h3>
                         <p class="text-muted mb-4">🔑 Código: {{ imovel.codigo_unico }}</p>
@@ -27,6 +36,13 @@
                         <div class="mb-3">
                             <h5 class="mb-2">Características</h5>
                             <ul class="list-group list-group-flush">
+                                 {% if imovel.valor_venda %}
+                                  <li class="list-group-item fw-bold text-decoration-none">Venda: R$ {{ imovel.valor_venda|floatformat:"2" }}</li>
+                                {% endif %}
+                                {% if imovel.valor_aluguel %}
+                                  <li class="list-group-item fw-bold text-decoration-none"><i class="bi bi-key me-1"></i> Aluguel: R$ {{ imovel.valor_aluguel|floatformat:"2" }}</li>
+                                {% endif %}
+                                <li class="list-group-item"><strong>IPTU:</strong> {{ imovel.valor_iptu }}</li>
                                 <li class="list-group-item"><strong>Quartos:</strong> {{ imovel.quartos }}</li>
                                 <li class="list-group-item"><strong>Banheiros:</strong> {{ imovel.banheiros }}</li>
                                 <li class="list-group-item"><strong>Área Total:</strong> {{ imovel.area_total }} m²</li>

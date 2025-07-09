@@ -1,5 +1,6 @@
 from django import forms
 
+from proprietarios.models import Proprietario
 from .models import Imovel
 
 class ImovelEtapa1Form(forms.ModelForm):
@@ -46,16 +47,29 @@ class ImovelEtapa1Form(forms.ModelForm):
             return cleaned_data
 
 class ImovelEtapa2Form(forms.ModelForm):
-    tem_condominio = forms.BooleanField(label='Condomínio incluído?', required=False)
-    tem_financiamento = forms.BooleanField(label='Aceita financiamento?', required=False)
-    tem_mobilia = forms.BooleanField(label='Possui mobília?', required=False)
-    tem_churrasqueira = forms.BooleanField(label='Tem churrasqueira?', required=False)
-    tem_elevador = forms.BooleanField(label='Possui elevador?', required=False)
-    tem_lareira = forms.BooleanField(label='Com lareira?', required=False)
-    tem_piscina = forms.BooleanField(label='Tem piscina?', required=False)
-    tem_portaria_24h = forms.BooleanField(label='Portaria 24h?', required=False)
-    tem_sacada = forms.BooleanField(label='Tem sacada?', required=False)
-    tem_salao_festa = forms.BooleanField(label='Tem salão de festas?', required=False)
+    proprietarios = forms.ModelMultipleChoiceField(
+        label='Proprietário(s) do imóvel',
+        queryset=Proprietario.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=True,
+        error_messages={'required': 'Informe ao menos um proprietário'}
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.dados_etapa1 = kwargs.pop('dados_etapa1', {})
+        super().__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        tipo_aluguel = self.dados_etapa1.get('tipo_aluguel')
+        status_imovel = cleaned_data.get('status_imovel')
+
+        if tipo_aluguel and status_imovel in ['PLANTA', 'CONSTR']:
+            self.add_error('status_imovel',
+                           'Imóveis na planta ou em construção não podem ser cadastrados para aluguel.')
+
+        return cleaned_data
+
     class Meta:
         model = Imovel
         fields = [
@@ -82,6 +96,7 @@ class ImovelEtapa2Form(forms.ModelForm):
             'tem_portaria_24h',
             'tem_sacada',
             'tem_salao_festa',
+            'proprietarios'
         ]
 
         labels = {
@@ -96,6 +111,16 @@ class ImovelEtapa2Form(forms.ModelForm):
             'vagas_garagem': 'Vagas de Garagem',
             'tipo_imovel': 'Tipo de imóvel',
             'status_imovel': 'Situação do imóvel',
+            'tem_condominio':'Condomínio incluído?',
+            'tem_financiamento':'Aceita financiamento?',
+            'tem_mobilia':'Possui mobília?',
+            'tem_churrasqueira':'Tem churrasqueira?',
+            'tem_elevador':'Possui elevador?',
+            'tem_lareira':'Com lareira?',
+            'tem_piscina':'Tem piscina?',
+            'tem_portaria_24h':'Portaria 24h?',
+            'tem_sacada':'Tem sacada?',
+            'tem_salao_festa':'Tem salão de festas?',
         }
 
         error_messages = {
@@ -112,8 +137,17 @@ class ImovelEtapa2Form(forms.ModelForm):
             'status_imovel': {'required': 'O status do imóvel é um campo obrigatório'},
         }
 
+
+
 class ImovelModelForm(forms.ModelForm):
-    tem_condominio = forms.BooleanField(label='Condomínio incluído?', required=False)
+    proprietarios = forms.ModelMultipleChoiceField(
+        label='Proprietário(s) do imóvel',
+        queryset=Proprietario.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=True,
+        error_messages={'required': 'Informe ao menos um proprietário'}
+    )
+    tem_condominio = forms.BooleanField(label='Condomínio fechado?', required=False)
     tem_financiamento = forms.BooleanField(label='Aceita financiamento?', required=False)
     tem_mobilia = forms.BooleanField(label='Possui mobília?', required=False)
     tem_churrasqueira = forms.BooleanField(label='Tem churrasqueira?', required=False)
@@ -123,6 +157,18 @@ class ImovelModelForm(forms.ModelForm):
     tem_portaria_24h = forms.BooleanField(label='Portaria 24h?', required=False)
     tem_sacada = forms.BooleanField(label='Tem sacada?', required=False)
     tem_salao_festa = forms.BooleanField(label='Tem salão de festas?', required=False)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        tipo_aluguel = self.instance.tipo_aluguel
+        status_imovel = cleaned_data.get('status_imovel')
+
+        if tipo_aluguel and status_imovel in ['PLANTA', 'CONSTR']:
+            self.add_error('status_imovel',
+                           'Imóveis na planta ou em construção não podem estar disponíveis para aluguel.')
+
+        return cleaned_data
+
     class Meta:
         model = Imovel
         fields = [

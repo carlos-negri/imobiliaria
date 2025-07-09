@@ -4,13 +4,21 @@
 
 <section class="py-5">
   <div class="container">
-    <div class="card shadow-lg mx-auto" style="max-width: 700px;">
+    <div class="card shadow-lg mx-auto" style="max-width: 800px;">
       <div class="card-header bg-primary text-white text-center">
         <h3 class="mb-0">Cadastro de Imóvel</h3>
       </div>
       <div class="card-body px-4 py-4">
         <form method="post" enctype="multipart/form-data" novalidate>
           {% csrf_token %}
+
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+              {% for error in form.non_field_errors %}
+                <div>{{ error }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
 
           {% if request.session.dados_etapa1.tipo_venda %}
             {% bootstrap_field form.valor_venda layout='horizontal' %}

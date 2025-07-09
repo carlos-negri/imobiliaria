@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.mail import send_mail
 from django.db import IntegrityError
@@ -67,6 +69,18 @@ class TransacaoAddEtapa2View(PermissionRequiredMixin, FormView):
 
             transacao = form.save(commit=False)
             transacao.tipo = tipo
+            valor=0
+            if tipo == 'V':
+                valor += transacao.imovel.valor_venda
+            elif tipo == 'A':
+                valor += transacao.imovel.valor_aluguel
+            else:
+                valor = 0
+
+            transacao.valor = valor
+            transacao.comissao = valor * Decimal('0.05')
+
+
             transacao.save()
 
         except IntegrityError:
@@ -125,7 +139,4 @@ class TransacaoDeleteView(PermissionRequiredMixin,SuccessMessageMixin, DeleteVie
     success_url = reverse_lazy('transacoes')
     success_message = 'Transação anulada com sucesso'
 
-def exibir_transacao(request, pk):
-    transacao = get_object_or_404(Transacao, pk=pk)
-    return render(request, 'transacao_exibir.html', {'transacao': transacao})
 

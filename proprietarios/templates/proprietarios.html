@@ -49,14 +49,14 @@
                                     <td>{{ proprietario.email }}</td>
 
                                     <td class="text-center">
-                                        <a href="{% url 'proprietario_editar' proprietario.pk %}" class="text-primary me-2" title="Editar">
+                                        <a href="{% url 'proprietario_editar' proprietario.pk %}" class="text-primary me-2 text-decoration-none" title="Editar">
                                             <i class="bi bi-pencil-square fs-5"></i>
                                         </a>
-                                        <a href="{% url 'proprietario_apagar' proprietario.pk %}" class="text-danger me-2" title="Excluir">
+                                        <a href="{% url 'proprietario_apagar' proprietario.pk %}" class="text-danger me-2 text-decoration-none" title="Excluir">
                                             <i class="bi bi-trash3-fill fs-5"></i>
                                         </a>
                                         {% if perms.servicos.add_produtosservico %}
-                                        <a href="{% url 'proprietario_inline' proprietario.pk %}" class="text-secondary" title="Inline Edit">
+                                        <a href="{% url 'proprietario_inline' proprietario.pk %}" class="text-secondary text-decoration-none" title="Inline Edit">
                                             <i class="bi bi-pencil fs-5"></i>
                                         </a>
                                         {% endif %}

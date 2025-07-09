@@ -53,7 +53,7 @@
                   <td class="text-center">{{ corretor.email }}</td>
                   {% if perms.corretores.update_corretor %}
                   <td class="text-center">
-                    <a href="{% url 'corretor_editar' corretor.pk %}" class="text-primary me-2" title="Editar">
+                    <a href="{% url 'corretor_editar' corretor.pk %}" class="text-primary me-2 text-decoration-none" title="Editar">
                       <i class="bi bi-pencil-square fs-5"></i>
                     </a>
                     <a href="{% url 'corretor_apagar' corretor.pk %}" class="text-danger" title="Excluir">

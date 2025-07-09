@@ -16,13 +16,13 @@
     </div>
     <div class="container mb-4 text-center">
       <div class="btn-group" role="group" aria-label="Filtros de Imóveis">
-        <a href="?tipo=aluguel" class="btn btn-outline-primary">
+        <a href="?tipo=aluguel" class="btn btn-outline-primary {% if request.GET.tipo == 'aluguel' %}active{% endif %}">
           <i class="bi bi-building"></i> Para Alugar
         </a>
-        <a href="?tipo=venda" class="btn btn-outline-success">
+        <a href="?tipo=venda" class="btn btn-outline-success {% if request.GET.tipo == 'venda' %}active{% endif %}">
           <i class="bi bi-currency-dollar"></i> À Venda
         </a>
-        <a href="{% url 'imoveis_disponiveis' %}" class="btn btn-outline-secondary">
+        <a href="{% url 'imoveis_disponiveis' %}" class="btn btn-outline-secondary {% if not request.GET.tipo %}active{% endif %}">
           <i class="bi bi-list-ul"></i> Todos
         </a>
       </div>
@@ -45,14 +45,14 @@
                 </h6>
 
                 <ul class="list-unstyled small mb-3">
-                  <li><i class="bi bi-house-door me-1"></i> {{ imovel.quartos }} quartos</li>
-                  <li><i class="bi bi-currency-dollar me-1"></i> IPTU: R$ {{ imovel.valor_iptu|floatformat:"2" }}</li>
                   {% if imovel.valor_venda %}
-                  <li><i class="bi bi-tag me-1"></i> Venda: R$ {{ imovel.valor_venda|floatformat:"2" }}</li>
+                  <li class="fw-bold"><i class="bi bi-tag me-1"></i> Venda: R$ {{ imovel.valor_venda|floatformat:"2" }}</li>
                   {% endif %}
                   {% if imovel.valor_aluguel %}
-                  <li><i class="bi bi-key me-1"></i> Aluguel: R$ {{ imovel.valor_aluguel|floatformat:"2" }}</li>
+                  <li class="fw-bold"><i class="bi bi-key me-1"></i> Aluguel: R$ {{ imovel.valor_aluguel|floatformat:"2" }}</li>
                   {% endif %}
+                  <li><i class="bi bi-house-door me-1"></i> {{ imovel.quartos }} quartos</li>
+                  <li><i class="bi bi-currency-dollar me-1"></i> IPTU: R$ {{ imovel.valor_iptu|floatformat:"2" }}</li>
                 </ul>
                 {% if perms.imoveis.view_imovel %}
                   <a href="{% url 'imovel_exibir' imovel.pk %}" class="btn btn-outline-primary w-100">

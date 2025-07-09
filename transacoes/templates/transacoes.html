@@ -33,8 +33,8 @@
           <table class="table table-hover align-middle">
             <thead class="table-primary text-center">
               <tr>
-                <th>Proprietário</th>
                 <th>Imóvel</th>
+                <th>Proprietário</th>
                 <th>Cliente</th>
                 <th>Corretor</th>
                 <th>Tipo</th>
@@ -45,21 +45,24 @@
             <tbody>
               {% for transacao in object_list %}
               <tr class="text-center">
-                <td>{{ transacao.proprietario }}</td>
-                <td>{{ transacao.imovel }}</td>
-                <td>{{ transacao.cliente }}</td>
-                <td>{{ transacao.corretor }}</td>
-                <td>{{ transacao.get_tipo_display }}</td>
-                <td>{{ transacao.valor }}</td>
-                <td class="text-center">
-                  <a href="{% url 'transacao_editar' transacao.pk %}" class="text-primary me-2" title="Editar">
-                    <i class="bi bi-pencil-square fs-5"></i>
-                  </a>
-                  <a href="{% url 'transacao_apagar' transacao.pk %}" class="text-danger" title="Excluir">
-                    <i class="bi bi-trash3-fill fs-5"></i>
-                  </a>
-                </td>
+
+                    <td>{{ transacao.imovel }}</td>
+                    <td>{{ transacao.proprietario }}</td>
+                    <td>{{ transacao.cliente }}</td>
+                    <td>{{ transacao.corretor }}</td>
+                    <td>{{ transacao.get_tipo_display }}</td>
+                    <td>{{ transacao.valor }}</td>
+                    <td class="text-center">
+                      <a href="{% url 'transacao_editar' transacao.pk %}" class="text-primary me-2 text-decoration-none" title="Editar">
+                        <i class="bi bi-pencil-square fs-5"></i>
+                      </a>
+                      <a href="{% url 'transacao_apagar' transacao.pk %}" class="text-danger" title="Excluir">
+                        <i class="bi bi-trash3-fill fs-5"></i>
+                      </a>
+                    </td>
+
               </tr>
+
               {% endfor %}
             </tbody>
           </table>
